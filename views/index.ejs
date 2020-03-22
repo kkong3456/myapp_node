@@ -4,23 +4,47 @@
   <link rel='stylesheet' href='/stylesheets/semantic.css' type='text/css' media='all'>
   <script type='text/javascript' src='/jquery/jquery.js'></script>
   <script type='text/javascript' src='/stylesheets/semantic.js'></script>
+  <link rel='stylesheet' href='/c3js/c3.css' type='text/css' media='all'>
+  <script type='text/javascript' src='/d3/d3.min.js' charset='utf-8'></script>
+  <script type='text/javascript' src='/c3js/c3.min.js'></script>
+
   <style>
     .twelve{
-      background-color:red;
+      background-color:#fafafa;
     }
   </style>
 </head>
 <body>
 <h1>하이루~~공하빈  <%=title%></h1>
 <div class="ui grid container">
-  <div class="four wide column">left top</div>
-  <div class="twelve wide column">right top</div>
+  <div class="four wide column">
+    <p><a href='#' title='cscf#1' alt='cscf#1'>CSCF#1</a></p>
+    <p><a href='#' title='cscf#2' alt='cscf#2'>CSCF#2</a></p>
+    <p><a href='#' title='cscf#3' alt='cscf#1'>CSCF#3</a></p>
+    <p><a href='#' title='cscf#4' alt='cscf#4'>CSCF#4</a></p>
+    <p><a href='#' title='cscf#5' alt='cscf#1'>CSCF#5</a></p>
+    <p><a href='#' title='vcscf#1' alt='cscf#1'>vCSCF#1</a></p>
+    <p><a href='#' title='vcscf#2' alt='cscf#1'>vCSCF#2</a></p>
+
+  </div>
+  <div class="twelve wide column">
+    <div id='chart'></div>
+
+  </div>
   <div class="four wide column">left bottom</div>
   <div class="twelve wide column">right bottom</div>
 
 </div>
 <script>
-  //alert('hi');
+  var chart=c3.generate({
+    bindto : '#chart',
+    data:{
+      columns:[
+        ['data1',30,200,100,400,150,250],
+        ['data2',50,20,10,40,15,25]
+      ]
+    }
+  });
 </script>
 </body>
 </html>

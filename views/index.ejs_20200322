@@ -13,7 +13,7 @@
       background-color:#fafafa;
     }
     #chart .c3-line-YIWGS-1{
-      #stroke-width:5px;
+      stroke-width:5px;
     }
   </style>
 </head>
@@ -40,42 +40,27 @@
 
 </div>
 <script>
-  var monitoringTime=600000;
-
-
-  var timeArray=new Array();
-  function timeLapse(){
-    var now=new Date();
-    var nowHour=now.getHours();
-    var nowMinute=now.getMinutes();
-    var epochMonitoringStartTime=now-monitoringTime;
-    var monitoringStartTime=new Date(epochMonitoringStartTime);
-    var monitoringStartTimeHour=monitoringStartTime.getHours();
-    var monitoringStartTimeMinute=monitoringStartTime.getMinutes();
-    for(var i=0;i<=monitoringTime/60000;i++){
-      if(monitoringStartTimeMinute+i<60){
-        timeArray.push(monitoringStartTimeHour+':'+(monitoringStartTimeMinute+i));
-      }else{
-        timeArray.push(nowHour+':'+(i-1));
-      }
-    }
-    return timeArray;
-  }
-
   setTimeout(function(){
-    timeArray=timeLapse();
+      var now=new Date();
   var chart=c3.generate({
      data:{
-        url:'/c3_test.json',
-        mimeType:'json',
-        type:'spline',
+        x:'x',
+        columns:['x',1001,1002,1003,1004,1005],
+        xFormat:"%H:%m",
+        url:'/c3_test.csv',
+        //mimeType:'json',
+
+        type:'spline'
       },
       axis:{
         x:{
-          type:'category',
-          categories:timeArray,
+          type:'timeseries',
+          //localtime:true,
           tick:{
-            centered:true
+            centered:true,
+            format:'%H:%m',
+
+            //format:function(x){return x.getMinutes();}
           }
         },
         y:{
@@ -95,24 +80,26 @@
     });
   },1000);
   setInterval(function(){
-    timeArray=[];
-    console.log(timeArray);
-
-    timeArray=timeLapse();
-    console.log(timeArray);
+    var now=new Date();
 
   var chart=c3.generate({
       data:{
-        url:'/c3_test.json',
-        mimeType:'json',
-        type:'spline',
+        x:'x',
+        // xFormat:'%H',
+        columns:['x',1001,1002,1003,1004,1005],
+
+        url:'/c3_test.csv',
+        //mimeType:'json',
+
+        type:'spline'
       },
       axis:{
         x:{
-          type:'category',
-          categories:timeArray,
+          type:'timeseries',
+          localtime:true,
           tick:{
-            centered:true
+            centered:true,
+            format:'%H:%m',
           }
         },
         y:{

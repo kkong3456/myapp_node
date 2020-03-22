@@ -18,7 +18,7 @@
   </style>
 </head>
 <body>
-<h1>VoLTE 복합장애 감시 시스템 - <%=title%></h1>
+<h3><center>VoLTE 복합장애 감시 시스템 - <%=title%></center></h3>
 <div class="ui grid container">
   <div class="four wide column">
     <p><a href='#' title='cscf#1' alt='cscf#1'>CSCF#1</a></p>
@@ -41,9 +41,8 @@
 </div>
 <script>
   var monitoringTime=600000;
-
-
   var timeArray=new Array();
+
   function timeLapse(){
     var now=new Date();
     var nowHour=now.getHours();
@@ -56,7 +55,8 @@
       if(monitoringStartTimeMinute+i<60){
         timeArray.push(monitoringStartTimeHour+':'+(monitoringStartTimeMinute+i));
       }else{
-        timeArray.push(nowHour+':'+(i-1));
+        var j=60;
+        timeArray.push(nowHour+':'+((monitoringStartTimeMinute+i)-j));
       }
     }
     return timeArray;
@@ -69,6 +69,17 @@
         url:'/c3_test.json',
         mimeType:'json',
         type:'spline',
+        // legend:{
+        //   hide:true,
+        // }
+      },
+      legend:{
+        hide:'YIWGS-1L',
+        item:{
+          onclick:function(id){
+            alert(id+'L');
+          }
+        }
       },
       axis:{
         x:{
@@ -86,7 +97,7 @@
         }
       },
       color:{
-        pattern:['#abcdef','bcdef0','#cdef01']
+        pattern:['#abcdef','#efefef','#cdef01']
       },
       transition:{
         duration:1000

@@ -1,7 +1,26 @@
 <!doctype html>
 <html>
-<head><title></title></head>
+<head><title><%=title%></title>
+  <link rel='stylesheet' href='/stylesheets/semantic.css' type='text/css' media='all'>
+  <script type='text/javascript' src='/jquery/jquery.js'></script>
+  <script type='text/javascript' src='/stylesheets/semantic.js'></script>
+  <style>
+    .twelve{
+      background-color:red;
+    }
+  </style>
+</head>
 <body>
-<h1>하이루~~</h1>
+<h1>하이루~~공하빈  <%=title%></h1>
+<div class="ui grid container">
+  <div class="four wide column">left top</div>
+  <div class="twelve wide column">right top</div>
+  <div class="four wide column">left bottom</div>
+  <div class="twelve wide column">right bottom</div>
+
+</div>
+<script>
+  //alert('hi');
+</script>
 </body>
 </html>

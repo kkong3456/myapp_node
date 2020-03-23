@@ -69,15 +69,15 @@
         url:'/c3_test.json',
         mimeType:'json',
         type:'spline',
-        // legend:{
-        //   hide:true,
-        // }
       },
       legend:{
         hide:'YIWGS-1L',
         item:{
           onclick:function(id){
-            alert(id+'L');
+            //alert(id+'L');
+            data:{
+              hide:true
+            }
           }
         }
       },

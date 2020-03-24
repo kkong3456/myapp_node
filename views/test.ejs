@@ -78,6 +78,7 @@ var chart=c3.generate({
       
         chart.hide(routeName);
         chart.show([id,id+'L']);
+        
         }).on('mouseout','.c3-legend-item-'+id,function(){
           chart.show(routeName);
         });
@@ -138,9 +139,6 @@ setInterval(function(){
   });
 },6000);
 
-    
-
-  </script>
-
+</script>
 </body>
 </html>

@@ -8,7 +8,7 @@
  * http://opensource.org/licenses/MIT
  *
  */
-@import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');
+/*@import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin'); */
 /*!
  * # Semantic UI 2.2.10 - Reset
  * http://github.com/semantic-org/semantic-ui/
@@ -14327,7 +14327,7 @@ ul.ui.list li:before,
   left: auto;
   font-weight: normal;
   margin-left: -1.25rem;
-  content: '•';
+  content: '?';
   opacity: 1;
   color: inherit;
   vertical-align: top;
@@ -17220,7 +17220,7 @@ ol.ui.horizontal.list li:before,
 .ui.ordered.steps .step.completed:before {
   font-family: 'Step';
   content: '\e800';
-  /* '' */
+  /* '?' */
 }
 
 /*******************************
@@ -23199,7 +23199,7 @@ Floated Menu / Item
 
 .ui.message .list:not(.ui) li:before {
   position: absolute;
-  content: '•';
+  content: '?';
   left: -1em;
   height: 100%;
   vertical-align: baseline;

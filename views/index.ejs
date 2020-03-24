@@ -16,7 +16,7 @@
     .two{
       background-color:#f6f6f6;
     }
-    #chart .c3-line-YIWGS-1{
+    #chart .c3-line-YIWGS1{
       #stroke-width:5px;
     }
     .layout{
@@ -24,6 +24,27 @@
       width:100%;
       height:300px;
     }
+    .ui.grid .c3-line-YIWGS1{
+    #  stroke-width:5px;
+    }
+
+
+
+    #chart svg{
+      background-color:#000000;
+    }
+
+    
+
+    .c3-axis-y text{
+      fill:white;
+      font-size:1em;
+    }
+    .c3-axis-x text{
+      fill:white;
+      font-size:1em;
+    }
+
   </style>
 </head>
 <body>
@@ -80,10 +101,12 @@ setTimeout(function(){
   timeArray=timeLapse();
 
 var chart=c3.generate({
+
  data:{
     url:'/c3_test.json',
     mimeType:'json',
     type:'spline',
+
   },
   legend:{
     hide:['YIWGS1L','GRWGS1L','GRWGS2L'],
@@ -183,7 +206,9 @@ var chart=c3.generate({
 
 });
 
-},30000);
+},600000);
+
+
 
 </script>
 </body>

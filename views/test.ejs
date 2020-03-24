@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head><title><%=title%></title>
+  <link rel='stylesheet' href='/stylesheets/semantic.css' type='text/css' media='all'>
+  <script type='text/javascript' src='/jquery/jquery.js'></script>
+  <script type='text/javascript' src='/stylesheets/semantic.js'></script>
+  <link rel='stylesheet' href='/c3js/c3.css' type='text/css' media='all'>
+  <script type='text/javascript' src='/d3/d3.min.js' charset='utf-8'></script>
+  <script type='text/javascript' src='/c3js/c3.min.js'></script>
+
+
+</head>
+<body>
+  <h3><center>VoLTE 복합장애 감시 시스템 - <%=title%></center></h3>
+  <div class="ui grid container">
+    <div class="four wide column">
+      <p><a href='/cscf1' title='cscf#1' alt='cscf#1'>CSCF#1</a></p>
+      <p><a href='/cscf2' title='cscf#2' alt='cscf#2'>CSCF#2</a></p>
+      <p><a href='/cscf3' title='cscf#3' alt='cscf#3'>CSCF#3</a></p>
+      <p><a href='/cscf4' title='cscf#4' alt='cscf#4'>CSCF#4</a></p>
+      <p><a href='/cscf5' title='cscf#5' alt='cscf#5'>CSCF#5</a></p>
+      <p><a href='/vcscf1' title='vcscf#1' alt='vcscf#1'>vCSCF#1</a></p>
+      <p><a href='/vcscf2' title='vcscf#2' alt='vcscf#2'>vCSCF#2</a></p>
+
+    </div>
+    <div class="twelve wide column">
+      <center><b>NE별 시도호</b></center>
+      <div id='chart' class='c3-line-ata2'></div>
+
+    </div>
+    <div class="four wide column">left bottom</div>
+    <div class="twelve wide column">right bottom</div>
+
+  </div>
+
+  <script>
+  jQuery(document).ready(function(){
+
+    var monitoringTime=600000;
+    var timeArray=new Array();
+
+    var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
+
+    function timeLapse(){
+      var now=new Date();
+      var nowHour=now.getHours();
+      var nowMinute=now.getMinutes();
+      var epochMonitoringStartTime=now-monitoringTime;
+      var monitoringStartTime=new Date(epochMonitoringStartTime);
+      var monitoringStartTimeHour=monitoringStartTime.getHours();
+      var monitoringStartTimeMinute=monitoringStartTime.getMinutes();
+      for(var i=0;i<=monitoringTime/60000;i++){
+        if(monitoringStartTimeMinute+i<60){
+          timeArray.push(monitoringStartTimeHour+':'+(monitoringStartTimeMinute+i));
+        }else{
+          var j=60;
+          timeArray.push(nowHour+':'+((monitoringStartTimeMinute+i)-j));
+        }
+      }
+      return timeArray;
+    }
+
+    var chart=c3.generate({
+    //  bindto:'#chart',
+     data:{
+       url:'/c3_test.json',
+       mimeType:'json',
+       type:'spline'
+      },
+      legend:{
+        hide:['YIWGS1L','GRWGS1L','GRWGS2L'],
+        item:{
+            onclick:function(id){
+            //  console.log(id);
+            }
+        },
+        item:{
+          onmouseover:function(id){
+            var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
+            jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
+              //console.log('xxx');
+              chart.hide(routeName);
+              chart.show([id,id+'L']);
+            }).on('mouseout','.c3-legend-item-'+id,function(){
+              chart.show(routeName);
+            });
+          }
+        }
+      },
+      axis:{
+        x:{
+          type:'category',
+          //categories:timeArray,
+          tick:{
+            centered:true
+          }
+        },
+        y:{
+          label:{
+            text:'시도호',
+            position:'outer-middle'
+          }
+        }
+      },
+      color:{
+        pattern:['#abcdef','#efefef','#cdef01']
+      },
+      transition:{
+        duration:1000
+      },
+      });
+
+
+
+    jQuery.ajax({
+      url:'c3_test.json',
+      method:'GET',
+      dataType:'json',
+    }).done(function(result){
+      console.log('xxx');
+      result.YIWGS1.unshift('YIWGS1');
+      result.YIWGS1L.unshift('YIWGS1L');
+      result.GRWGS1.unshift('GRWGS1');
+      result.GRWGS1L.unshift('GRWGS1L');
+      result.GRWGS2.unshift('GRWGS2');
+      result.GRWGS2L.unshift('GRWGS2L');
+      console.log('a');
+
+      timeArray=timeLapse();
+      chart.load({
+        columns:[
+           result.YIWGS1,
+           result.YIWGS1L,
+           result.GRWGS1,
+           result.GRWGS1L,
+           result.GRWGS2,
+           result.GRWGS2L,
+         ],
+      });
+
+    }).fail(function(xhr,status,errorThrown){
+      document.write('xxx');
+    });
+
+
+  });
+  </script>
+
+</body>
+</html>

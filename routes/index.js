@@ -7,6 +7,12 @@ router.get('/', function(req, res, next) {
   next();
 });
 
+router.all('/test',function(req,res,ext){
+  console.log(req);
+  res.render('test',{title:'ajax'})
+  next();
+});
+
 router.get('/cscf1',function(req,res,next){
   res.render('cscf1',{title:'CSCF#1'});
   next();

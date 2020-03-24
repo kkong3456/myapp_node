@@ -33,117 +33,113 @@
 
   </div>
 
-  <script>
-  jQuery(document).ready(function(){
+<script>
+  var monitoringTime=600000;
+  var timeArray=new Array();
+  var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
 
-    var monitoringTime=600000;
-    var timeArray=new Array();
-
-    var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-
-    function timeLapse(){
-      var now=new Date();
-      var nowHour=now.getHours();
-      var nowMinute=now.getMinutes();
-      var epochMonitoringStartTime=now-monitoringTime;
-      var monitoringStartTime=new Date(epochMonitoringStartTime);
-      var monitoringStartTimeHour=monitoringStartTime.getHours();
-      var monitoringStartTimeMinute=monitoringStartTime.getMinutes();
-      for(var i=0;i<=monitoringTime/60000;i++){
-        if(monitoringStartTimeMinute+i<60){
-          timeArray.push(monitoringStartTimeHour+':'+(monitoringStartTimeMinute+i));
-        }else{
-          var j=60;
-          timeArray.push(nowHour+':'+((monitoringStartTimeMinute+i)-j));
-        }
-      }
-      return timeArray;
+function timeLapse(){
+  var now=new Date();
+  var nowHour=now.getHours();
+  var nowMinute=now.getMinutes();
+  var epochMonitoringStartTime=now-monitoringTime;
+  var monitoringStartTime=new Date(epochMonitoringStartTime);
+  var monitoringStartTimeHour=monitoringStartTime.getHours();
+  var monitoringStartTimeMinute=monitoringStartTime.getMinutes();
+  
+  for(var i=0;i<=monitoringTime/60000;i++){
+    if(monitoringStartTimeMinute+i<60){
+      timeArray.push(monitoringStartTimeHour+':'+(monitoringStartTimeMinute+i));
+    }else{
+      var j=60;
+      timeArray.push(nowHour+':'+((monitoringStartTimeMinute+i)-j));
     }
+  }
+  return timeArray;
+}
 
-    var chart=c3.generate({
-    //  bindto:'#chart',
-     data:{
-       url:'/c3_test.json',
-       mimeType:'json',
-       type:'spline'
-      },
-      legend:{
-        hide:['YIWGS1L','GRWGS1L','GRWGS2L'],
-        item:{
-            onclick:function(id){
-            //  console.log(id);
-            }
-        },
-        item:{
-          onmouseover:function(id){
-            var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-            jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
-              //console.log('xxx');
-              chart.hide(routeName);
-              chart.show([id,id+'L']);
-            }).on('mouseout','.c3-legend-item-'+id,function(){
-              chart.show(routeName);
-            });
-          }
-        }
-      },
-      axis:{
-        x:{
-          type:'category',
-          //categories:timeArray,
-          tick:{
-            centered:true
-          }
-        },
-        y:{
-          label:{
-            text:'시도호',
-            position:'outer-middle'
-          }
-        }
-      },
-      color:{
-        pattern:['#abcdef','#efefef','#cdef01']
-      },
-      transition:{
-        duration:1000
-      },
-      });
+var chart=c3.generate({
+  data:{
+  url:'/c3_test.json',
+  mimeType:'json',
+  type:'spline'
+  },
+  legend:{
+    hide:['YIWGS1L','GRWGS1L','GRWGS2L'],
+    item:{
+      onclick:function(id){
+      //  console.log(id);
+      }
+    },
+    item:{
+      onmouseover:function(id){
+        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
+        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
+      
+        chart.hide(routeName);
+        chart.show([id,id+'L']);
+        }).on('mouseout','.c3-legend-item-'+id,function(){
+          chart.show(routeName);
+        });
+      }
+    }
+  },
+  axis:{
+    x:{
+      type:'category',
+      categories:timeArray,
+      tick:{
+        centered:true
+      }
+    },
+    y:{
+      label:{
+        text:'시도호',
+        position:'outer-middle'
+      }
+    }
+  },
+  color:{
+    pattern:['#abcdef','#efefef','#cdef01']
+  },
+  transition:{
+    duration:1000
+  },
+});  //end chart
 
 
-
-    jQuery.ajax({
-      url:'c3_test.json',
-      method:'GET',
-      dataType:'json',
-    }).done(function(result){
-      console.log('xxx');
-      result.YIWGS1.unshift('YIWGS1');
-      result.YIWGS1L.unshift('YIWGS1L');
-      result.GRWGS1.unshift('GRWGS1');
-      result.GRWGS1L.unshift('GRWGS1L');
-      result.GRWGS2.unshift('GRWGS2');
-      result.GRWGS2L.unshift('GRWGS2L');
-      console.log('a');
-
-      timeArray=timeLapse();
-      chart.load({
-        columns:[
-           result.YIWGS1,
-           result.YIWGS1L,
-           result.GRWGS1,
-           result.GRWGS1L,
-           result.GRWGS2,
-           result.GRWGS2L,
-         ],
-      });
-
-    }).fail(function(xhr,status,errorThrown){
-      document.write('xxx');
+setInterval(function(){
+  jQuery.ajax({
+    url:'/c3_test.json',
+    method:'GET',
+    dataType:'json',
+  }).done(function(result){
+    //console.log(result);
+    
+    result.YIWGS1.unshift('YIWGS1');
+    result.YIWGS1L.unshift('YIWGS1L');
+    result.GRWGS1.unshift('GRWGS1');
+    result.GRWGS1L.unshift('GRWGS1L');
+    result.GRWGS2.unshift('GRWGS2');
+    result.GRWGS2L.unshift('GRWGS2L');
+    
+    chart.load({
+      columns:[
+        result.YIWGS1,
+        result.YIWGS1L,
+        result.GRWGS1,
+        result.GRWGS1L,
+        result.GRWGS2,
+        result.GRWGS2L,
+      ]
     });
-
-
+  }).fail(function(a,b,c){
+    console.log('a');
   });
+},6000);
+
+    
+
   </script>
 
 </body>

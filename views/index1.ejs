@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head><title><%=title%></title>
+  <link rel='stylesheet' href='/stylesheets/semantic.css' type='text/css' media='all'>
+  <script type='text/javascript' src='/jquery/jquery.js'></script>
+  <script type='text/javascript' src='/stylesheets/semantic.js'></script>
+  <link rel='stylesheet' href='/c3js/c3.css' type='text/css' media='all'>
+  <script type='text/javascript' src='/d3/d3.min.js' charset='utf-8'></script>
+  <script type='text/javascript' src='/c3js/c3.min.js'></script>
+
+  <style>
+    .twelve{
+      background-color:#fafafa;
+    }
+    #chart .c3-line-YIWGS-1{
+      #stroke-width:5px;
+    }
+  </style>
+</head>
+<body>
+<h3><center>VoLTE 복합장애 감시 시스템 - <%=title%></center></h3>
+<div class="ui grid container">
+  <div class="four wide column">
+    <p><a href='#' title='cscf#1' alt='cscf#1'>CSCF#1</a></p>
+    <p><a href='#' title='cscf#2' alt='cscf#2'>CSCF#2</a></p>
+    <p><a href='#' title='cscf#3' alt='cscf#1'>CSCF#3</a></p>
+    <p><a href='#' title='cscf#4' alt='cscf#4'>CSCF#4</a></p>
+    <p><a href='#' title='cscf#5' alt='cscf#1'>CSCF#5</a></p>
+    <p><a href='#' title='vcscf#1' alt='cscf#1'>vCSCF#1</a></p>
+    <p><a href='#' title='vcscf#2' alt='cscf#1'>vCSCF#2</a></p>
+
+  </div>
+  <div class="twelve wide column">
+    <center><b>NE별 시도호</b></center>
+    <div id='chart' class='c3-line-ata2'></div>
+
+  </div>
+  <div class="four wide column">left bottom</div>
+  <div class="twelve wide column">right bottom</div>
+
+</div>
+<script>
+var chart = c3.generate({
+    bindto: '#chart',
+    data: {
+      columns: [
+        ['data1', 30, 200, 100, 400, 150, 250],
+        ['data2', 50, 20, 10, 40, 15, 25],
+        ['data3', 44,22,22,55,33,55]
+      ]
+    }
+});
+
+
+
+jQuery('.c3-legend-item-data1').mouseover(
+  function(){
+    console.log('yyy');
+  // chart.load({
+  //   columns:[
+  //     ['data1',300,100,250,150,300,150,500],
+  //     ['data2',290,190,240,140,290,140,490],
+  //   ]
+  // });
+  chart.hide(['data1','data2','data3']);
+  chart.show(['data1','data2']);
+});
+
+
+</script>
+</body>
+</html>

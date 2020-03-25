@@ -11,11 +11,11 @@
   <script type='text/javascript' src='/d3/d3.min.js' charset='utf-8'></script>
   <script type='text/javascript' src='/c3js/c3.min.js'></script>
 <style>
-  .sixteen{
+  .eight{
     background-color:#eeeeee;
   }
 
-  #chart svg,#chart1 svg{
+  #callChart1 svg,#completeChart1 svg{
     background-color:#454545;
   }
   /* x축 선색 */
@@ -58,7 +58,7 @@ jQuery(function() {
         Select CSCF ??<i class="dropdown icon"></i>
         <div class="menu">
           <div class="item"><a href='/cscf1' title='CSCF#1' alt='CSCF#1'>CSCF#1</a></div>
-          <div class="item"><a href='/cscf2' title='CSCF#2' alt='CSCF#2'>CSCF#2</a></div>
+          <div class="item"><a href='#cscf2' title='CSCF#2' alt='CSCF#2'>CSCF#2</a></div>
           <div class="item"><a href='/cscf3' title='CSCF#3' alt='CSCF#3'>CSCF#3</a></div>
           <div class="item"><a href='/cscf4' title='CSCF#4' alt='CSCF#4'>CSCF#4</a></div>
           <div class="item"><a href='/cscf5' title='CSCF#5' alt='CSCF#5'>CSCF#5</a></div>
@@ -80,14 +80,16 @@ jQuery(function() {
       <div>WARNNING<i class="volume up icon"></i></div>
     </div>
 
-    <div class="sixteen wide column">
-      <center><b>루트별 시도호</b></center>
-      <div id='chart' class='c3-line-ata2'></div>
+
+    <div class="eight wide column">
+      <center><b>CSCF#1 루트별 시도호</b></center>
+      <div id='callChart1' class='c3-line-ata2'></div>
     </div>
 
-    <div class="sixteen wide column">
-      <center><b>루트별 완료율</b></center>
-      <div id='chart1'></div>
+    <div class="eight wide column">
+      <a href="#cscf2"></a><!--책갈피-->
+      <center><b>CSCF#1 루트별 완료율</a></b></center>
+      <div id='completeChart1'></div>
     </div>
 
   </div>
@@ -117,9 +119,9 @@ function timeLapse(){
   }
   return timeArray;
 }
-// 시도호 그래프
-var callChart=c3.generate({
-  bindto:'#chart',
+// CSCF#1 시도호 그래프
+var callChart1=c3.generate({
+  bindto:'#callChart1',
   data:{
   x:'TIME',
   url:'/call_count.json',
@@ -152,11 +154,11 @@ var callChart=c3.generate({
         var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
         jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
 
-        callChart.hide(routeName);
-        callChart.show([id,id+'L']);
+        callChart1.hide(routeName);
+        callChart1.show([id,id+'L']);
 
         }).on('mouseout','.c3-legend-item-'+id,function(){
-          callChart.show(routeName);
+          callChart1.show(routeName);
         });
       }
     }
@@ -186,9 +188,9 @@ var callChart=c3.generate({
   },
 });  //end chart 시도호
 
-//완료율 그래프
-var completeChart=c3.generate({
-  bindto:'#chart1',
+//CSCF#1완료율 그래프
+var completeChart1=c3.generate({
+  bindto:'#completeChart1',
   data:{
   x:'TIME',
   url:'/complete_ratio.json',
@@ -213,11 +215,11 @@ var completeChart=c3.generate({
         var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
         jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
         //console.log('xxx');
-        completeChart.hide(routeName);
-        completeChart.show([id,id+'L']);
+        completeChart1.hide(routeName);
+        completeChart1.show([id,id+'L']);
 
         }).on('mouseout','.c3-legend-item-'+id,function(){
-          completeChart.show(routeName);
+          completeChart1.show(routeName);
         });
       }
     }
@@ -250,7 +252,7 @@ var completeChart=c3.generate({
   },
 });  //end chart 완요율
 
-//시도호 ajax
+//CSCF#1 시도호 ajax
 setInterval(function(){
   jQuery.ajax({
     url:'/call_count.json',
@@ -283,7 +285,7 @@ setInterval(function(){
   });
 },6000);
 
-//완료율 ajax
+//CSCF#2 완료율 ajax
 setInterval(function(){
   jQuery.ajax({
     url:'/complete_ratio.json',

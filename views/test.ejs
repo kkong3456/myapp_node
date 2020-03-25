@@ -2,34 +2,93 @@
 <html>
 <head><title><%=title%></title>
   <link rel='stylesheet' href='/stylesheets/semantic.css' type='text/css' media='all'>
+  <link rel='stylesheet' href='/UI-Icon-master/icon.min.css' type='text/css' media='all'>
+  <like rel='stylesheet' href='/UI-Dropdown-master/dropdown.min.css' type='text/css' media='all'>
   <script type='text/javascript' src='/jquery/jquery.js'></script>
   <script type='text/javascript' src='/stylesheets/semantic.js'></script>
+  <script type='text/javascript' src='/UI-Dropdown-master/dropdown.min.js'></script>
   <link rel='stylesheet' href='/c3js/c3.css' type='text/css' media='all'>
   <script type='text/javascript' src='/d3/d3.min.js' charset='utf-8'></script>
   <script type='text/javascript' src='/c3js/c3.min.js'></script>
+<style>
+  .sixteen{
+    background-color:#eeeeee;
+  }
 
+  #chart svg,#chart1 svg{
+    background-color:#454545;
+  }
+  /* x축 선색 */
+  .c3 .c3-axis-x path,
+  .c3 .c3-axis-x line{
+    stroke:#ddd;
+  }
+
+  .c3 .c3-axis-y path,
+  .c3 .c3-axis-y lines{
+    stroke:#ddd;
+  }
+  /* x 축 글자 색*/
+  .c3 .c3-axis-x{
+    stroke:white;
+    font-weight:100;
+  }
+
+  .c3 .c3-axis-y{
+    stroke:white;
+    font-weight:100;
+  }
+  /*아래 범레의 글자색 변경*/
+  .c3 .c3-legend-item{
+     fill:white
+  }
+</style>
+<script>
+jQuery(function() {
+  jQuery('.ui.dropdown').dropdown();
+});
+</script>
 
 </head>
 <body>
-  <h3><center>VoLTE 복합장애 감시 시스템 - <%=title%></center></h3>
   <div class="ui grid container">
-    <div class="four wide column">
-      <p><a href='/cscf1' title='cscf#1' alt='cscf#1'>CSCF#1</a></p>
-      <p><a href='/cscf2' title='cscf#2' alt='cscf#2'>CSCF#2</a></p>
-      <p><a href='/cscf3' title='cscf#3' alt='cscf#3'>CSCF#3</a></p>
-      <p><a href='/cscf4' title='cscf#4' alt='cscf#4'>CSCF#4</a></p>
-      <p><a href='/cscf5' title='cscf#5' alt='cscf#5'>CSCF#5</a></p>
-      <p><a href='/vcscf1' title='vcscf#1' alt='vcscf#1'>vCSCF#1</a></p>
-      <p><a href='/vcscf2' title='vcscf#2' alt='vcscf#2'>vCSCF#2</a></p>
-
+  <div class="sixteen wide column"><h3><center>VoLTE 복합장애 감시 시스템 - <%=title%></center></h3></div>
+    <div class="eight wide column">
+      <div class="ui loading selection dropdown">
+        Select CSCF ??<i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="item"><a href='/cscf1' title='CSCF#1' alt='CSCF#1'>CSCF#1</a></div>
+          <div class="item"><a href='/cscf2' title='CSCF#2' alt='CSCF#2'>CSCF#2</a></div>
+          <div class="item"><a href='/cscf3' title='CSCF#3' alt='CSCF#3'>CSCF#3</a></div>
+          <div class="item"><a href='/cscf4' title='CSCF#4' alt='CSCF#4'>CSCF#4</a></div>
+          <div class="item"><a href='/cscf5' title='CSCF#5' alt='CSCF#5'>CSCF#5</a></div>
+          <div class="item"><a href='/vcscf1' title='vCSCF#1' alt='vCSCF#1'>vCSCF#1</a></div>
+          <div class="item"><a href='/vcscf2' title='vCSCF#2' alt='vCSCF#2'>vCSCF#2</a></div>
+        </div>
+      </div>
     </div>
-    <div class="twelve wide column">
-      <center><b>NE별 시도호</b></center>
+    <div class="seven wide column">
+      <div class="ui loading selection dropdown">
+        select Service ??<i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="item"><a href='/cscf1' title='CSCF#1' alt='CSCF#1'>EVENT</a></div>
+          <div class="item"><a href='/cscf2' title='CSCF#2' alt='CSCF#2'>폭주호</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="one wide column">
+      <div>WARNNING<i class="volume up icon"></i></div>
+    </div>
+
+    <div class="sixteen wide column">
+      <center><b>루트별 시도호</b></center>
       <div id='chart' class='c3-line-ata2'></div>
-
     </div>
-    <div class="four wide column">left bottom</div>
-    <div class="twelve wide column">right bottom</div>
+
+    <div class="sixteen wide column">
+      <center><b>루트별 완료율</b></center>
+      <div id='chart1'></div>
+    </div>
 
   </div>
 
@@ -38,6 +97,7 @@
   var timeArray=new Array();
   var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
 
+//x축시간 표시(사용안함)
 function timeLapse(){
   var now=new Date();
   var nowHour=now.getHours();
@@ -46,7 +106,7 @@ function timeLapse(){
   var monitoringStartTime=new Date(epochMonitoringStartTime);
   var monitoringStartTimeHour=monitoringStartTime.getHours();
   var monitoringStartTimeMinute=monitoringStartTime.getMinutes();
-  
+
   for(var i=0;i<=monitoringTime/60000;i++){
     if(monitoringStartTimeMinute+i<60){
       timeArray.push(monitoringStartTimeHour+':'+(monitoringStartTimeMinute+i));
@@ -57,15 +117,31 @@ function timeLapse(){
   }
   return timeArray;
 }
-
-var chart=c3.generate({
+// 시도호 그래프
+var callChart=c3.generate({
+  bindto:'#chart',
   data:{
-  url:'/c3_test.json',
+  x:'TIME',
+  url:'/call_count.json',
   mimeType:'json',
-  type:'spline'
+  type:'spline',
+  hide:['TIME'],
+
+  },
+  grid:{
+    x:{
+      show:true
+    },
+    y:{
+      show:true
+    }
+  },
+
+  tooltip:{
+    grouped:false
   },
   legend:{
-    hide:['YIWGS1L','GRWGS1L','GRWGS2L'],
+    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
     item:{
       onclick:function(id){
       //  console.log(id);
@@ -75,12 +151,12 @@ var chart=c3.generate({
       onmouseover:function(id){
         var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
         jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
-      
-        chart.hide(routeName);
-        chart.show([id,id+'L']);
-        
+
+        callChart.hide(routeName);
+        callChart.show([id,id+'L']);
+
         }).on('mouseout','.c3-legend-item-'+id,function(){
-          chart.show(routeName);
+          callChart.show(routeName);
         });
       }
     }
@@ -88,12 +164,14 @@ var chart=c3.generate({
   axis:{
     x:{
       type:'category',
-      categories:timeArray,
+      //categories:'TIME',
       tick:{
-        centered:true
+        centered:true,
       }
     },
     y:{
+      max:400,
+      min:100,
       label:{
         text:'시도호',
         position:'outer-middle'
@@ -106,36 +184,135 @@ var chart=c3.generate({
   transition:{
     duration:1000
   },
-});  //end chart
+});  //end chart 시도호
 
+//완료율 그래프
+var completeChart=c3.generate({
+  bindto:'#chart1',
+  data:{
+  x:'TIME',
+  url:'/complete_ratio.json',
+  mimeType:'json',
+  type:'spline',
+  hide:['TIME'],
 
+  },
+
+  tooltip:{
+    grouped:false,
+  },
+  legend:{
+    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
+    item:{
+      onclick:function(id){
+      //  console.log(id);
+      }
+    },
+    item:{
+      onmouseover:function(id){
+        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
+        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
+        //console.log('xxx');
+        completeChart.hide(routeName);
+        completeChart.show([id,id+'L']);
+
+        }).on('mouseout','.c3-legend-item-'+id,function(){
+          completeChart.show(routeName);
+        });
+      }
+    }
+  },
+  axis:{
+    x:{
+      type:'category',
+      //categories:'TIME',
+      tick:{
+        centered:true
+      }
+    },
+    y:{
+      max:100,
+      min:20,
+      tick:{
+        format:d3.format('.0f')
+      },
+      label:{
+        text:'완료율',
+        position:'outer-middle'
+      }
+    }
+  },
+  color:{
+    pattern:['#abcdef','#efefef','#cdef01']
+  },
+  transition:{
+    duration:1000
+  },
+});  //end chart 완요율
+
+//시도호 ajax
 setInterval(function(){
   jQuery.ajax({
-    url:'/c3_test.json',
+    url:'/call_count.json',
     method:'GET',
     dataType:'json',
   }).done(function(result){
-    //console.log(result);
-    
+    //console.log(result.TIME);
+
+    result.TIME.unshift('TIME');
     result.YIWGS1.unshift('YIWGS1');
     result.YIWGS1L.unshift('YIWGS1L');
     result.GRWGS1.unshift('GRWGS1');
     result.GRWGS1L.unshift('GRWGS1L');
     result.GRWGS2.unshift('GRWGS2');
     result.GRWGS2L.unshift('GRWGS2L');
-    
-    chart.load({
+
+    callChart.load({
       columns:[
+        result.TIME,
         result.YIWGS1,
         result.YIWGS1L,
         result.GRWGS1,
         result.GRWGS1L,
         result.GRWGS2,
         result.GRWGS2L,
-      ]
+      ],
     });
   }).fail(function(a,b,c){
     console.log('a');
+  });
+},6000);
+
+//완료율 ajax
+setInterval(function(){
+  jQuery.ajax({
+    url:'/complete_ratio.json',
+    method:'GET',
+    dataType:'json',
+  }).done(function(result){
+    //console.log(result.TIME);
+
+    result.TIME.unshift('TIME');
+    result.YIWGS1.unshift('YIWGS1');
+    result.YIWGS1L.unshift('YIWGS1L');
+    result.GRWGS1.unshift('GRWGS1');
+    result.GRWGS1L.unshift('GRWGS1L');
+    result.GRWGS2.unshift('GRWGS2');
+    result.GRWGS2L.unshift('GRWGS2L');
+
+    completeChart.load({
+      columns:[
+        result.TIME,
+        result.YIWGS1,
+        result.YIWGS1L,
+        result.GRWGS1,
+        result.GRWGS1L,
+        result.GRWGS2,
+        result.GRWGS2L,
+      ],
+    });
+  }).fail(function(a,b,c){
+    console.log('b');
   });
 },6000);
 

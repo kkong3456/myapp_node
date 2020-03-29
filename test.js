@@ -1,9 +1,5 @@
-var book={
-  title:'Ego is the Enemy',
-  author:'Ryan Holiday'  
-}
+var fs=require('fs');
 
-var bookJSON=JSON.stringify(book);
-console.log(bookJSON);
-var parseData=JSON.parse(bookJSON);
-console.log(parseData.author);
+fs.readFile('public/complete_ratio.json','utf-8',function(error,data){
+  console.log(data);
+});

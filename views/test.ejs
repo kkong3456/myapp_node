@@ -4,6 +4,7 @@
   <link rel='stylesheet' href='/stylesheets/semantic.css' type='text/css' media='all'>
   <link rel='stylesheet' href='/UI-Icon-master/icon.min.css' type='text/css' media='all'>
   <like rel='stylesheet' href='/UI-Dropdown-master/dropdown.min.css' type='text/css' media='all'>
+  <link rel='stylesheet' href='/stylesheets/animate.css' type='text/css' media='all'>
   <script type='text/javascript' src='/jquery/jquery.js'></script>
   <script type='text/javascript' src='/stylesheets/semantic.js'></script>
   <script type='text/javascript' src='/UI-Dropdown-master/dropdown.min.js'></script>
@@ -12,10 +13,12 @@
   <script type='text/javascript' src='/c3js/c3.min.js'></script>
 <style>
   .eight{
-    background-color:#eeeeee;
+    /* background-color:#eeeeee; */
   }
 
-  #callChart1 svg,#completeChart1 svg{
+  #callChart1 svg,#completeChart1 svg,#callChart2 svg,#completeChart2 svg,
+  #callChart3 svg,#completeChart3 svg
+  {
     background-color:#454545;
   }
   /* x축 선색 */
@@ -40,65 +43,111 @@
   }
   /*아래 범레의 글자색 변경*/
   .c3 .c3-legend-item{
-     fill:white
+     fill:white;
   }
+
+  #eventWindow,#runaway{
+    border:1px solid #cccccc;
+    height:100px;
+    overflow:auto;
+  }
+  .animated.bounce{
+    /* animation-duration:5s;
+    animation-delay:10s; */
+  }
+  #block{
+    height:10px;
+    background-color:red;
+  }
+
 </style>
 <script>
 jQuery(function() {
   jQuery('.ui.dropdown').dropdown();
+  jQuery('#eventWindow').load('/event.txt');
+
 });
 </script>
 
 </head>
 <body>
-  <div class="ui grid container">
-  <div class="sixteen wide column"><h3><center>VoLTE 복합장애 감시 시스템 - <%=title%></center></h3></div>
-    <div class="eight wide column">
-      <div class="ui loading selection dropdown">
-        Select CSCF ??<i class="dropdown icon"></i>
-        <div class="menu">
-          <div class="item"><a href='/cscf1' title='CSCF#1' alt='CSCF#1'>CSCF#1</a></div>
-          <div class="item"><a href='#cscf2' title='CSCF#2' alt='CSCF#2'>CSCF#2</a></div>
-          <div class="item"><a href='/cscf3' title='CSCF#3' alt='CSCF#3'>CSCF#3</a></div>
-          <div class="item"><a href='/cscf4' title='CSCF#4' alt='CSCF#4'>CSCF#4</a></div>
-          <div class="item"><a href='/cscf5' title='CSCF#5' alt='CSCF#5'>CSCF#5</a></div>
-          <div class="item"><a href='/vcscf1' title='vCSCF#1' alt='vCSCF#1'>vCSCF#1</a></div>
-          <div class="item"><a href='/vcscf2' title='vCSCF#2' alt='vCSCF#2'>vCSCF#2</a></div>
-        </div>
+<div class="ui grid container">
+  <div class="sixteen wide column"><h3 class="animated  bounce slower"><center>VoLTE 복합장애 감시 시스템 - <%=title%></center></h3></div>
+  <!-- <div class="eight wide column">
+    <div class="ui loading selection dropdown">
+      Select CSCF ??<i class="dropdown icon"></i>
+      <div class="menu">
+        <div class="item"><a href='#cscf1' title='CSCF#1' alt='CSCF#1'>CSCF#1</a></div>
+        <div class="item"><a href='#cscf2' title='CSCF#2' alt='CSCF#2'>CSCF#2</a></div>
+        <div class="item"><a href='#cscf3' title='CSCF#3' alt='CSCF#3'>CSCF#3</a></div>
+        <div class="item"><a href='#cscf4' title='CSCF#4' alt='CSCF#4'>CSCF#4</a></div>
+        <div class="item"><a href='#cscf5' title='CSCF#5' alt='CSCF#5'>CSCF#5</a></div>
+        <div class="item"><a href='#vcscf1' title='vCSCF#1' alt='vCSCF#1'>vCSCF#1</a></div>
+        <div class="item"><a href='#vcscf2' title='vCSCF#2' alt='vCSCF#2'>vCSCF#2</a></div>
       </div>
     </div>
-    <div class="seven wide column">
-      <div class="ui loading selection dropdown">
-        select Service ??<i class="dropdown icon"></i>
-        <div class="menu">
-          <div class="item"><a href='/cscf1' title='CSCF#1' alt='CSCF#1'>EVENT</a></div>
-          <div class="item"><a href='/cscf2' title='CSCF#2' alt='CSCF#2'>폭주호</a></div>
-        </div>
+  </div> -->
+  <!-- <div class="seven wide column">
+    <div class="ui loading selection dropdown">
+      select Service ??<i class="dropdown icon"></i>
+      <div class="menu">
+        <div class="item"><a href='/cscf1' title='CSCF#1' alt='CSCF#1'>EVENT</a></div>
+        <div class="item"><a href='/cscf2' title='CSCF#2' alt='CSCF#2'>폭주호</a></div>
       </div>
     </div>
-    <div class="one wide column">
-      <div>WARNNING<i class="volume up icon"></i></div>
-    </div>
-
-
-    <div class="eight wide column">
-      <center><b>CSCF#1 루트별 시도호</b></center>
-      <div id='callChart1' class='c3-line-ata2'></div>
-    </div>
-
-    <div class="eight wide column">
-      <a href="#cscf2"></a><!--책갈피-->
-      <center><b>CSCF#1 루트별 완료율</a></b></center>
-      <div id='completeChart1'></div>
-    </div>
-
   </div>
+  <div class="one wide column">
+
+    <div>WARNNING<i class="volume up icon"></i></div>
+  </div> -->
+  <div class="eight wide column parent">
+    <center><b>EVENT Window</b></center>
+    <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>이벤트가 없습니다.</div>
+  </div>
+  <div class="eight wide column">
+    <center><b>RUNAWAY Call NO</b></center>
+    <div id="runaway" class='animated bounceInRight delay-0s faster'></div>
+  </div>
+
+
+  <div class="eight wide column">
+    <center id="cscf1"><b class="animated  zoomIn slower">CSCF#1 루트별 시도호</b></center>
+    <div id='callChart1' class='animated bounceInLeft delay-0s fast'></div>
+  </div>
+
+  <div class="eight wide column">
+    <a href="#cscf2"></a><!--책갈피-->
+    <center><b>CSCF#1 루트별 완료율</a></b></center>
+    <div id='completeChart1' class="animated bounceInRight delay-0s fast"></div>
+  </div>
+
+  <div class="eight wide column">
+    <center id="cscf2"><b>CSCF#2 루트별 시도호</b></center>
+    <div id='callChart2' id='cscf2' class='animated bounceInLeft delay-0s slow'></div>
+  </div>
+
+  <div class="eight wide column">
+    <center><b>CSCF#2 루트별 완료율</a></b></center>
+    <div id='completeChart2' class='animated bounceInRight delay-0s slow'></div>
+  </div>
+
+  <div class="eight wide column">
+    <center id="cscf3"><b>CSCF#3 루트별 시도호</b></center>
+    <div id='callChart3' class='c3-line-ata2'></div>
+  </div>
+
+  <div class="eight wide column">
+    <center><b>CSCF#3 루트별 완료율</a></b></center>
+    <div id='completeChart3'></div>
+  </div>
+</div><!--container-->
 
 <script>
   var monitoringTime=600000;
   var timeArray=new Array();
   var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-
+  var animationCnt=0;
+  var beforeAnimationCnt=0;
 //x축시간 표시(사용안함)
 function timeLapse(){
   var now=new Date();
@@ -119,7 +168,72 @@ function timeLapse(){
   }
   return timeArray;
 }
-// CSCF#1 시도호 그래프
+
+//Event Window창에 경보내용 표시
+function displayEvent(result,cscf){
+  // result.TIME.unshift('TIME');  //배열 맨 앞에 루트네임을 위치
+  // result.YIWGS1.unshift('YIWGS1');
+  // result.YIWGS1L.unshift('YIWGS1L');
+  // result.GRWGS1.unshift('GRWGS1');
+  // result.GRWGS1L.unshift('GRWGS1L');
+  // result.GRWGS2.unshift('GRWGS2');
+  // result.GRWGS2L.unshift('GRWGS2L');
+  //
+  // var newTimeItem=result.TIME[result.TIME.length-1];
+  // var headYIWGS1Item=result.YIWGS1[0];   //루트네임
+  // var newYIWGS1Item=result.YIWGS1[result.YIWGS1.length-1]; //최신데이터
+  //
+  // var headGRWGS1Item=result.GRWGS1[0];
+  // var newGRWGS1Item=result.GRWGS1[result.GRWGS1.length-1];
+  //
+  // var headGRWGS2Item=result.GRWGS2[0];
+  // var newGRWGS2Item=result.GRWGS2[result.GRWGS2.length-1];
+  //
+  // var wgsName=new Array(headYIWGS1Item,headGRWGS1Item,headGRWGS2Item);   //순서대로
+  // var newCompletValue=new Array(newYIWGS1Item,newGRWGS1Item,newGRWGS2Item); //순서대로
+  //
+  // var animationCnt='F';
+  jQuery('#eventWindow').load('/event.txt',function(responseText,status,XHR){
+    console.log(responseText);
+  });
+  var animationCnt=(jQuery('#eventWindow>br').size());
+  console.log(animationCnt)
+
+  // for(var i=0;i<newCompletValue.length;i++){
+  //    if(newCompletValue[i]<60){
+  //      animationCnt='T';
+  //      jQuery('#eventWindow').prepend('<p>'+newTimeItem+' '+cscf+' '+wgsName[i]+' 완료율 하락 경보!! ('+newCompletValue[i]+')</p>');
+  //     // console.log(jQuery('#eventWindow > p').size());
+  //    }
+  //  }
+
+  if(animationCnt>beforeAnimationCnt){
+    var elem=document.getElementById('eventWindow');
+    try{
+      elem.classList.remove('bounceInLeft');
+    }catch(e){
+
+    }
+    elem.classList.add('shake');
+    elem.addEventListener('animationend',function(){
+    elem.classList.remove('shake');
+    });
+  }
+  beforeAnimationCnt=animationCnt;
+}
+
+//시도호 그래프 데이터 가공
+function displayCall(result){
+  result.TIME.unshift('TIME');
+  result.YIWGS1.unshift('YIWGS1');
+  result.YIWGS1L.unshift('YIWGS1L');
+  result.GRWGS1.unshift('GRWGS1');
+  result.GRWGS1L.unshift('GRWGS1L');
+  result.GRWGS2.unshift('GRWGS2');
+  result.GRWGS2L.unshift('GRWGS2L');
+}
+
+// CSCF 시도호 차트
 var callChart1=c3.generate({
   bindto:'#callChart1',
   data:{
@@ -128,7 +242,10 @@ var callChart1=c3.generate({
   mimeType:'json',
   type:'spline',
   hide:['TIME'],
-
+  },
+  zoom:{
+    enabled:true,
+    type:'scroll',
   },
   grid:{
     x:{
@@ -187,8 +304,141 @@ var callChart1=c3.generate({
     duration:1000
   },
 });  //end chart 시도호
+var callChart2=c3.generate({
+  bindto:'#callChart2',
+  data:{
+  x:'TIME',
+  url:'/call_count.json',
+  mimeType:'json',
+  type:'spline',
+  hide:['TIME'],
 
-//CSCF#1완료율 그래프
+  },
+  grid:{
+    x:{
+      show:true
+    },
+    y:{
+      show:true
+    }
+  },
+
+  tooltip:{
+    grouped:false
+  },
+  legend:{
+    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
+    item:{
+      onclick:function(id){
+      //  console.log(id);
+      }
+    },
+    item:{
+      onmouseover:function(id){
+        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
+        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
+
+        callChart2.hide(routeName);
+        callChart2.show([id,id+'L']);
+
+        }).on('mouseout','.c3-legend-item-'+id,function(){
+          callChart2.show(routeName);
+        });
+      }
+    }
+  },
+  axis:{
+    x:{
+      type:'category',
+      //categories:'TIME',
+      tick:{
+        centered:true,
+      }
+    },
+    y:{
+      max:400,
+      min:100,
+      label:{
+        text:'시도호',
+        position:'outer-middle'
+      }
+    }
+  },
+  color:{
+    pattern:['#abcdef','#efefef','#cdef01']
+  },
+  transition:{
+    duration:1000
+  },
+});  //end chart 시도호
+var callChart3=c3.generate({
+  bindto:'#callChart3',
+  data:{
+  x:'TIME',
+  url:'/call_count.json',
+  mimeType:'json',
+  type:'spline',
+  hide:['TIME'],
+
+  },
+  grid:{
+    x:{
+      show:true
+    },
+    y:{
+      show:true
+    }
+  },
+
+  tooltip:{
+    grouped:false
+  },
+  legend:{
+    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
+    item:{
+      onclick:function(id){
+      //  console.log(id);
+      }
+    },
+    item:{
+      onmouseover:function(id){
+        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
+        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
+
+        callChart3.hide(routeName);
+        callChart3.show([id,id+'L']);
+
+        }).on('mouseout','.c3-legend-item-'+id,function(){
+          callChart3.show(routeName);
+        });
+      }
+    }
+  },
+  axis:{
+    x:{
+      type:'category',
+      //categories:'TIME',
+      tick:{
+        centered:true,
+      }
+    },
+    y:{
+      max:400,
+      min:100,
+      label:{
+        text:'시도호',
+        position:'outer-middle'
+      }
+    }
+  },
+  color:{
+    pattern:['#abcdef','#efefef','#cdef01']
+  },
+  transition:{
+    duration:1000
+  },
+});  //end chart 시도호
+//CSCF#1완료율 차트
 var completeChart1=c3.generate({
   bindto:'#completeChart1',
   data:{
@@ -199,6 +449,14 @@ var completeChart1=c3.generate({
   hide:['TIME'],
 
   },
+  grid:{
+    x:{
+      show:true
+    },
+    y:{
+      show:true
+    }
+  },
 
   tooltip:{
     grouped:false,
@@ -207,7 +465,7 @@ var completeChart1=c3.generate({
     hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
     item:{
       onclick:function(id){
-      //  console.log(id);
+      //  console.log(id);// 범레를 클릭했을 때 기본 동작 함수를 오버라이드 함
       }
     },
     item:{
@@ -251,8 +509,148 @@ var completeChart1=c3.generate({
     duration:1000
   },
 });  //end chart 완요율
+var completeChart2=c3.generate({
+  bindto:'#completeChart2',
+  data:{
+  x:'TIME',
+  url:'/complete_ratio.json',
+  mimeType:'json',
+  type:'spline',
+  hide:['TIME'],
 
-//CSCF#1 시도호 ajax
+  },
+  grid:{
+    x:{
+      show:true
+    },
+    y:{
+      show:true
+    }
+  },
+
+  tooltip:{
+    grouped:false,
+  },
+  legend:{
+    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
+    item:{
+      onclick:function(id){
+      //  console.log(id);
+      }
+    },
+    item:{
+      onmouseover:function(id){
+        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
+        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
+        //console.log('xxx');
+        completeChart2.hide(routeName);
+        completeChart2.show([id,id+'L']);
+
+        }).on('mouseout','.c3-legend-item-'+id,function(){
+          completeChart2.show(routeName);
+        });
+      }
+    }
+  },
+  axis:{
+    x:{
+      type:'category',
+      //categories:'TIME',
+      tick:{
+        centered:true
+      }
+    },
+    y:{
+      max:100,
+      min:20,
+      tick:{
+        format:d3.format('.0f')
+      },
+      label:{
+        text:'완료율',
+        position:'outer-middle'
+      }
+    }
+  },
+  color:{
+    pattern:['#abcdef','#efefef','#cdef01']
+  },
+  transition:{
+    duration:1000
+  },
+});  //end chart 완요율
+var completeChart3=c3.generate({
+  bindto:'#completeChart3',
+  data:{
+  x:'TIME',
+  url:'/complete_ratio.json',
+  mimeType:'json',
+  type:'spline',
+  hide:['TIME'],
+
+  },
+  grid:{
+    x:{
+      show:true
+    },
+    y:{
+      show:true
+    }
+  },
+
+  tooltip:{
+    grouped:false,
+  },
+  legend:{
+    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
+    item:{
+      onclick:function(id){
+      //  console.log(id);
+      }
+    },
+    item:{
+      onmouseover:function(id){
+        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
+        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
+        //console.log('xxx');
+        completeChart3.hide(routeName);
+        completeChart3.show([id,id+'L']);
+
+        }).on('mouseout','.c3-legend-item-'+id,function(){
+          completeChart3.show(routeName);
+        });
+      }
+    }
+  },
+  axis:{
+    x:{
+      type:'category',
+      //categories:'TIME',
+      tick:{
+        centered:true
+      }
+    },
+    y:{
+      max:100,
+      min:20,
+      tick:{
+        format:d3.format('.0f')
+      },
+      label:{
+        text:'완료율',
+        position:'outer-middle'
+      }
+    }
+  },
+  color:{
+    pattern:['#abcdef','#efefef','#cdef01']
+  },
+  transition:{
+    duration:1000
+  },
+});  //end chart 완요율
+
+//CSCF1 시도호 ajax
 setInterval(function(){
   jQuery.ajax({
     url:'/call_count.json',
@@ -260,16 +658,34 @@ setInterval(function(){
     dataType:'json',
   }).done(function(result){
     //console.log(result.TIME);
+    displayCall(result);
 
-    result.TIME.unshift('TIME');
-    result.YIWGS1.unshift('YIWGS1');
-    result.YIWGS1L.unshift('YIWGS1L');
-    result.GRWGS1.unshift('GRWGS1');
-    result.GRWGS1L.unshift('GRWGS1L');
-    result.GRWGS2.unshift('GRWGS2');
-    result.GRWGS2L.unshift('GRWGS2L');
+    callChart1.load({
+      columns:[
+        result.TIME,
+        result.YIWGS1,
+        result.YIWGS1L,
+        result.GRWGS1,
+        result.GRWGS1L,
+        result.GRWGS2,
+        result.GRWGS2L,
+      ],
+    });
+  }).fail(function(a,b,c){
+    console.log('a');
+  });
+},6000);
+//CSCF2 시도호 ajax
+setInterval(function(){
+  jQuery.ajax({
+    url:'/call_count.json',
+    method:'GET',
+    dataType:'json',
+  }).done(function(result){
+    //console.log(result.TIME);
+    displayCall(result);
 
-    callChart.load({
+    callChart2.load({
       columns:[
         result.TIME,
         result.YIWGS1,
@@ -285,24 +701,18 @@ setInterval(function(){
   });
 },6000);
 
-//CSCF#2 완료율 ajax
+//CSCF1 완료율 ajax
 setInterval(function(){
+
   jQuery.ajax({
     url:'/complete_ratio.json',
     method:'GET',
     dataType:'json',
   }).done(function(result){
     //console.log(result.TIME);
+    displayEvent(result,cscf='CSCF#1');
 
-    result.TIME.unshift('TIME');
-    result.YIWGS1.unshift('YIWGS1');
-    result.YIWGS1L.unshift('YIWGS1L');
-    result.GRWGS1.unshift('GRWGS1');
-    result.GRWGS1L.unshift('GRWGS1L');
-    result.GRWGS2.unshift('GRWGS2');
-    result.GRWGS2L.unshift('GRWGS2L');
-
-    completeChart.load({
+    completeChart1.load({
       columns:[
         result.TIME,
         result.YIWGS1,
@@ -314,7 +724,33 @@ setInterval(function(){
       ],
     });
   }).fail(function(a,b,c){
-    console.log('b');
+    console.log('a');
+  });
+},6000);
+
+//cscf2 완료율 ajax
+setInterval(function(){
+  jQuery.ajax({
+    url:'/complete_ratio.json',
+    method:'GET',
+    dataType:'json',
+  }).done(function(result){
+    //console.log(result.TIME);
+    displayEvent(result,cscf='CSCF#2');
+
+    completeChart2.load({
+      columns:[
+        result.TIME,
+        result.YIWGS1,
+        result.YIWGS1L,
+        result.GRWGS1,
+        result.GRWGS1L,
+        result.GRWGS2,
+        result.GRWGS2L,
+      ],
+    });
+  }).fail(function(a,b,c){
+    console.log('xxx');
   });
 },6000);
 

@@ -44,20 +44,25 @@ function getNewCompleteData(){
       var animationCnt='F';
       console.log('yyy');
       for(var i=0;i<newCompletValue.length;i++){
-         if(newCompletValue[i]<60){
+         if(newCompletValue[i]<60){  //완료율 60이
            var warningMsg=`${newTimeItem} CSCF#1 ${wgsName[i]} 완료율 하락!! (${newCompletValue[i]})`+'<br>\n';
            eventHistoryArray.unshift(warningMsg);
 
          }
-         if(eventHistoryArray.length>3){
-           eventHistoryArray.pop();
+         if(eventHistoryArray.length>4){
+           eventHistoryArray.pop(); //배열에서 제일 뒤의 값을 삭제
+           //eventHistoryArray.pop();
          }
       }
-      //배열을 파일에 쓴다
+
+
+
+      //배열을 파일에
         fs.writeFile('./public/event.txt',eventHistoryArray,'utf8',function(err){
           if(err){throw err};
         //  console.log('OK');
         });
+      //}
     } //else
   });
 }//getNewCompleteData

@@ -175,14 +175,17 @@ function timeLapse(){
 
 //Event Window창에 경보내용 표시
 function displayEvent(result,cscf){
-  // result.TIME.unshift('TIME');  //배열 맨 앞에 루트네임을 위치
-  // result.YIWGS1.unshift('YIWGS1');
-  // result.YIWGS1L.unshift('YIWGS1L');
-  // result.GRWGS1.unshift('GRWGS1');
-  // result.GRWGS1L.unshift('GRWGS1L');
-  // result.GRWGS2.unshift('GRWGS2');
-  // result.GRWGS2L.unshift('GRWGS2L');
-  //
+
+  //완료율 차트 그릴때 범례에 각 완료률이 초기값 나오는 버그 제거용 더미 코
+  result.TIME.unshift('TIME');  //배열 맨 앞에 루트네임을 위치
+  result.YIWGS1.unshift('YIWGS1');
+  result.YIWGS1L.unshift('YIWGS1L');
+  result.GRWGS1.unshift('GRWGS1');
+  result.GRWGS1L.unshift('GRWGS1L');
+  result.GRWGS2.unshift('GRWGS2');
+  result.GRWGS2L.unshift('GRWGS2L');
+  /////////// 더미코드 끝
+
   // var newTimeItem=result.TIME[result.TIME.length-1];
   // var headYIWGS1Item=result.YIWGS1[0];   //루트네임
   // var newYIWGS1Item=result.YIWGS1[result.YIWGS1.length-1]; //최신데이터
@@ -205,7 +208,7 @@ function displayEvent(result,cscf){
 
 
 
-
+  //var beforeAnimationCnt=0;
   var animationCnt=(jQuery('#eventWindow>br').size());
 
 
@@ -217,7 +220,7 @@ function displayEvent(result,cscf){
   //    }
   //  }
 
-  if(animationCnt>beforeAnimationCnt){
+  if(animationCnt!=beforeAnimationCnt){
     var elem=document.getElementById('eventWindow');
     try{
       elem.classList.remove('bounceInLeft');
@@ -229,6 +232,7 @@ function displayEvent(result,cscf){
     elem.classList.remove('shake');
     });
   }
+
   beforeAnimationCnt=animationCnt;
 }
 
@@ -545,7 +549,7 @@ var completeChart2=c3.generate({
     hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
     item:{
       onclick:function(id){
-      //  console.log(id);
+        console.log(id);
       }
     },
     item:{

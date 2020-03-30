@@ -10,6 +10,7 @@ router.get('/', function(req, res, next) {
   next();
 });
 
+var eventHistoryArray=new Array();
 
 function getNewCompleteData(){
   fs.readFile('./public/complete_ratio.json','utf8',function(err,data){
@@ -45,23 +46,27 @@ function getNewCompleteData(){
       for(var i=0;i<newCompletValue.length;i++){
          if(newCompletValue[i]<60){
            var warningMsg=`${newTimeItem} CSCF#1 ${wgsName[i]} 완료율 하락!! (${newCompletValue[i]})`+'<br>\n';
+           eventHistoryArray.unshift(warningMsg);
 
-           fs.appendFile('./public/event.txt',warningMsg,'utf8',function(err){
-             if(err){throw err};
-             console.log('OK');
-           });
+         }
+         if(eventHistoryArray.length>3){
+           eventHistoryArray.pop();
          }
       }
-
+      //배열을 파일에 쓴다
+        fs.writeFile('./public/event.txt',eventHistoryArray,'utf8',function(err){
+          if(err){throw err};
+        //  console.log('OK');
+        });
     } //else
-
   });
 }//getNewCompleteData
 
 router.all('/test',function(req,res,next){
   console.log('ss');
+  eventHistoryArray=[];
   setInterval(getNewCompleteData,6000);
-  res.render('test',{title:'ajax',animationCnt:'T'});
+  res.render('test',{title:'ajax',eventHistoryArray:eventHistoryArray});
 });
 
 

@@ -59,12 +59,15 @@
     height:10px;
     background-color:red;
   }
-
+  /*가짜 이벤트 창 : 이벤트 배열 ,이 표시됨 */
+  #eventFakeWindow{
+    display:none;
+  }
 </style>
 <script>
 jQuery(function() {
   jQuery('.ui.dropdown').dropdown();
-  jQuery('#eventWindow').load('/event.txt');
+  //jQuery('#eventWindow').load('/event.txt');
 
 });
 </script>
@@ -102,7 +105,8 @@ jQuery(function() {
   </div> -->
   <div class="eight wide column parent">
     <center><b>EVENT Window</b></center>
-    <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>이벤트가 없습니다.</div>
+    <div id="eventWindow" class='animated bounceInLeft delay-0s faster'></div>
+    <div id="eventFakeWindow"></div>
   </div>
   <div class="eight wide column">
     <center><b>RUNAWAY Call NO</b></center>
@@ -192,12 +196,18 @@ function displayEvent(result,cscf){
   // var wgsName=new Array(headYIWGS1Item,headGRWGS1Item,headGRWGS2Item);   //순서대로
   // var newCompletValue=new Array(newYIWGS1Item,newGRWGS1Item,newGRWGS2Item); //순서대로
   //
-  // var animationCnt='F';
-  jQuery('#eventWindow').load('/event.txt',function(responseText,status,XHR){
-    console.log(responseText);
+
+  jQuery('#eventFakeWindow').load('/event.txt',function(responseText,status,XHR){
+    var xxx=responseText.replace(/,/g,''); //event.txt파일이 배열이르모 ','을 앖에애 힌디/
+    //console.log(xxx);
+    jQuery('#eventWindow').html(xxx);
   });
+
+
+
+
   var animationCnt=(jQuery('#eventWindow>br').size());
-  console.log(animationCnt)
+
 
   // for(var i=0;i<newCompletValue.length;i++){
   //    if(newCompletValue[i]<60){

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var fs=require('fs');
+var app=express();
 
 
 
@@ -66,7 +67,7 @@ function getNewCompleteData(){
     } //else
   });
 }//getNewCompleteData
-
+app.locals.myVar='ajax';
 router.all('/test',function(req,res,next){
   console.log('ss');
   eventHistoryArray=[];

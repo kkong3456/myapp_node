@@ -105,7 +105,11 @@ jQuery(function() {
   </div> -->
   <div class="eight wide column parent">
     <center><b>EVENT Window</b></center>
-    <div id="eventWindow" class='animated bounceInLeft delay-0s faster'></div>
+    <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>
+      <% for(i in results){%>
+        <p><%=results[i].YIWGS1_A%></p>
+      <%}%>
+      </div>
     <div id="eventFakeWindow"></div>
   </div>
   <div class="eight wide column">
@@ -203,8 +207,8 @@ function displayEvent(result,cscf){
   jQuery('#eventFakeWindow').load('/event.txt',function(responseText,status,XHR){
     var xxx=responseText.replace(/,/g,''); //event.txt파일이 배열이르모 ','을 앖에애 힌디/
     //console.log(xxx);
-  
-    jQuery('#eventWindow').html(xxx);
+
+  //  jQuery('#eventWindow').html(xxx);
   });
 
 
@@ -258,6 +262,14 @@ var callChart1=c3.generate({
   type:'spline',
   hide:['TIME'],
   },
+  // data:{
+  //   columns:[
+  //     ['YIWGS1',
+  //     <%for(i in results){%>
+  //       <%=results[i].YIWGS1_A%>,
+  //     <%}%>]
+  //   ],
+  // },
   zoom:{
     enabled:true,
     type:'scroll',
@@ -668,22 +680,24 @@ var completeChart3=c3.generate({
 //CSCF1 시도호 ajax
 setInterval(function(){
   jQuery.ajax({
-    url:'/call_count.json',
+    url:'/ajax',
     method:'GET',
+    async:false,
     dataType:'json',
   }).done(function(result){
-    //console.log(result.TIME);
-    displayCall(result);
+    console.log(result.YIWGS1_A);
+    // displayCall(result);
+    console.log(<%=1%>);
 
     callChart1.load({
       columns:[
-        result.TIME,
-        result.YIWGS1,
-        result.YIWGS1L,
-        result.GRWGS1,
-        result.GRWGS1L,
-        result.GRWGS2,
-        result.GRWGS2L,
+        //result[0].TIME,
+        // result.YIWGS1,
+        // result.YIWGS1L,
+        // result.GRWGS1,
+        // result.GRWGS1L,
+        // result.GRWGS2,
+        // result.GRWGS2L,
       ],
     });
   }).fail(function(a,b,c){

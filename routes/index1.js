@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var fs=require('fs');
 var app=express();
-var mysql=require('mysql');
 
 
 
@@ -68,60 +67,12 @@ function getNewCompleteData(){
     } //else
   });
 }//getNewCompleteData
-// function dqConnect(){
-//   var connection=mysql.createConnection({
-//     host:'localhost',
-//     user:'nodejs',
-//     password:'rmfltmeh',
-//     database:'oneview',
-//   //  port:3307,
-//   });
-//   console.log('aa');
-//
-//   connection.connect();
-//   connection.query('select * from route',function(err,results,fields){
-//     //console.log(results);
-//     res.send(results);
-//   });
-//   connection.end();
-// }
-
-var connection=mysql.createConnection({
-  host:'localhost',
-  user:'nodejs',
-  password:'rmfltmeh',
-  database:'oneview',
-//  port:3307,
-});
+app.locals.myVar='ajax';
 router.all('/test',function(req,res,next){
-
-  connection.connect();
-  connection.query('select * from route',function(err,results,fields){
-    // if(err) throw err;
-    res.render('test',{title:'ajax',results:results});
-    //console.log(results);
-
-
-  });
-
-  //res.render('test',{title:'ajax'});
-  //res.send(results);
-});
-
-router.all('/ajax',function(req,res,next){
-  var connection=mysql.createConnection({
-    host:'localhost',
-    user:'nodejs',
-    password:'rmfltmeh',
-    database:'oneview',
-  });
-
-  connection.connect();
-  connection.query('select * from route',function(err,results){
-    console.log('xxx');
-    res.send({result:results});
-    //res.send(results);
-  });
+  console.log('ss');
+  eventHistoryArray=[];
+  setInterval(getNewCompleteData,6000);
+  res.render('test',{title:'ajax',eventHistoryArray:eventHistoryArray});
 });
 
 

@@ -106,8 +106,8 @@ jQuery(function() {
   <div class="eight wide column parent">
     <center><b>EVENT Window</b></center>
     <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>
-      <% for(i in results){%>
-        <p><%=results[i].YIWGS1_A%></p>
+      <% for(var i=0;i<eventArray.length;i++){%>
+        <p><%=eventArray[i]%></p>
       <%}%>
       </div>
     <div id="eventFakeWindow"></div>
@@ -180,6 +180,8 @@ function timeLapse(){
 //Event Window창에 경보내용 표시
 function displayEvent(result,cscf){
 
+ 
+
   //완료율 차트 그릴때 범례에 각 완료률이 초기값 나오는 버그 제거용 더미 코
   result.TIME.unshift('TIME');  //배열 맨 앞에 루트네임을 위치
   result.YIWGS1.unshift('YIWGS1');
@@ -242,6 +244,7 @@ function displayEvent(result,cscf){
 }
 
 //시도호 그래프 데이터 가공
+
 function displayCall(result){
   result.TIME.unshift('TIME');
   result.YIWGS1.unshift('YIWGS1');
@@ -253,23 +256,44 @@ function displayCall(result){
 }
 
 // CSCF 시도호 차트
+
 var callChart1=c3.generate({
   bindto:'#callChart1',
-  data:{
-  x:'TIME',
-  url:'/call_count.json',
-  mimeType:'json',
-  type:'spline',
-  hide:['TIME'],
-  },
-  // data:{
-  //   columns:[
-  //     ['YIWGS1',
-  //     <%for(i in results){%>
-  //       <%=results[i].YIWGS1_A%>,
-  //     <%}%>]
-  //   ],
-  // },
+  //data:{
+  //x:'TIME',
+  //url:'/call_count.json',
+  //mimeType:'json',
+  //type:'spline',
+  //hide:['TIME'],
+  //},
+   data:{
+    x:'TIME',
+    hide:['TIME'],
+    type:'spline',
+    columns:[
+    
+      ['TIME',
+        <%for(i in results){%>
+          <%=results[i].TIME%>,
+        <%}%>
+      ],
+      ['YIWGS1_A',
+        <%for(i in results){%>
+          <%=results[i].YIWGS1_A%>,
+        <%}%>
+      ],
+      ['GRWGS1_A',
+        <%for(i in results){%>
+          <%=results[i].GRWGS1_A%>,
+        <%}%>
+      ],
+      ['GRWGS2_A',
+        <%for(i in results){%>
+          <%=results[i].GRWGS2_A%>,
+        <%}%>
+      ],
+    ],
+   },
   zoom:{
     enabled:true,
     type:'scroll',
@@ -316,7 +340,7 @@ var callChart1=c3.generate({
       }
     },
     y:{
-      max:400,
+      max:30000,
       min:100,
       label:{
         text:'시도호',
@@ -465,17 +489,45 @@ var callChart3=c3.generate({
     duration:1000
   },
 });  //end chart 시도호
+
 //CSCF#1완료율 차트
 var completeChart1=c3.generate({
   bindto:'#completeChart1',
+  //data:{
+  //x:'TIME',
+  //url:'/complete_ratio.json',
+  //mimeType:'json',
+  //type:'spline',
+  //hide:['TIME'],
+  //},
   data:{
-  x:'TIME',
-  url:'/complete_ratio.json',
-  mimeType:'json',
-  type:'spline',
-  hide:['TIME'],
-
-  },
+    x:'TIME',
+    hide:['TIME'],
+    type:'spline',
+    columns:[
+    
+      ['TIME',
+        <%for(i in results){%>
+          <%=results[i].TIME%>,
+        <%}%>
+      ],
+      ['YIWGS1_C',
+        <%for(i in results){%>
+          <%=results[i].YIWGS1_C%>,
+        <%}%>
+      ],
+      ['GRWGS1_C',
+        <%for(i in results){%>
+          <%=results[i].GRWGS1_C%>,
+        <%}%>
+      ],
+      ['GRWGS2_C',
+        <%for(i in results){%>
+          <%=results[i].GRWGS2_C%>,
+        <%}%>
+      ],
+    ],
+   },
   grid:{
     x:{
       show:true
@@ -685,20 +737,27 @@ setInterval(function(){
     async:false,
     dataType:'json',
   }).done(function(result){
-    console.log(result.YIWGS1_A);
-    // displayCall(result);
-    console.log(<%=1%>);
-
+   
+    var TIME=new Array('TIME');
+    var YIWGS1_A=new Array('YIWGS1_A');
+    var GRWGS1_A=new Array('GRWGS1_A');
+    var GRWGS2_A=new Array('GRWGS2_A');
+    
+    for(var i=0;i<result.length;i++){
+      TIME.push(result[i].TIME);
+      YIWGS1_A.push(result[i].YIWGS1_A);
+      GRWGS1_A.push(result[i].GRWGS1_A);
+      GRWGS2_A.push(result[i].GRWGS2_A);
+    }
+    //displayCall(result);
+    
     callChart1.load({
-      columns:[
-        //result[0].TIME,
-        // result.YIWGS1,
-        // result.YIWGS1L,
-        // result.GRWGS1,
-        // result.GRWGS1L,
-        // result.GRWGS2,
-        // result.GRWGS2L,
-      ],
+        columns:[
+          TIME,
+          YIWGS1_A,
+          GRWGS1_A,
+          GRWGS2_A,
+        ],
     });
   }).fail(function(a,b,c){
     console.log('a');
@@ -734,23 +793,33 @@ setInterval(function(){
 setInterval(function(){
 
   jQuery.ajax({
-    url:'/complete_ratio.json',
+    url:'/ajax',
     method:'GET',
     dataType:'json',
   }).done(function(result){
     //console.log(result.TIME);
-    displayEvent(result,cscf='CSCF#1');
+    //displayEvent(result,cscf='CSCF#1');
 
+    var TIME=new Array('TIME');
+    var YIWGS1_C=new Array('YIWGS1_C');
+    var GRWGS1_C=new Array('GRWGS1_C');
+    var GRWGS2_C=new Array('GRWGS2_C');
+    
+    for(var i=0;i<result.length;i++){
+      TIME.push(result[i].TIME);
+      YIWGS1_C.push(result[i].YIWGS1_C);
+      GRWGS1_C.push(result[i].GRWGS1_C);
+      GRWGS2_C.push(result[i].GRWGS2_C);
+    }
+    //displayCall(result);
+    
     completeChart1.load({
-      columns:[
-        result.TIME,
-        result.YIWGS1,
-        result.YIWGS1L,
-        result.GRWGS1,
-        result.GRWGS1L,
-        result.GRWGS2,
-        result.GRWGS2L,
-      ],
+        columns:[
+          TIME,
+          YIWGS1_C,
+          GRWGS1_C,
+          GRWGS2_C,
+        ],
     });
   }).fail(function(a,b,c){
     console.log('a');

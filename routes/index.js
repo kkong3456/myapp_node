@@ -68,59 +68,65 @@ function getNewCompleteData(){
     } //else
   });
 }//getNewCompleteData
-// function dqConnect(){
-//   var connection=mysql.createConnection({
-//     host:'localhost',
-//     user:'nodejs',
-//     password:'rmfltmeh',
-//     database:'oneview',
-//   //  port:3307,
-//   });
-//   console.log('aa');
-//
-//   connection.connect();
-//   connection.query('select * from route',function(err,results,fields){
-//     //console.log(results);
-//     res.send(results);
-//   });
-//   connection.end();
-// }
+
 
 var connection=mysql.createConnection({
   host:'localhost',
-  user:'nodejs',
-  password:'rmfltmeh',
+  user:'root',
+  password:'',
   database:'oneview',
-//  port:3307,
+  multipleStatements:true,
 });
+
 router.all('/test',function(req,res,next){
+  var sql1='select * from route order by TIME desc limit 1;';  //최신 데이터
+  var sql2='select * from route1;';  //초기 spine차트 그림 데이터
+   
+  var routeArray=[];
+  var eventArray=[];
 
-  connection.connect();
-  connection.query('select * from route',function(err,results,fields){
-    // if(err) throw err;
-    res.render('test',{title:'ajax',results:results});
-    //console.log(results);
-
-
+  //connection.connect();
+ 
+  connection.query(sql1 ,function(err,results,fields){
+    //if(err) throw err;
+    var nowResult=results[0]; //sql1의 결과값
+    var results=results[1];  //sql2의 결과값
+    
+    
+    //console.log(nowResult);
+    console.log(results);
+    
+    var nowTime=nowResult.TIME;
+    var nowYIWGS1=nowResult.YIWGS1_C;
+    var nowGRWGS1=nowResult.GRWGS1_C;
+    var nowGRWGS2=nowResult.GRWGS2_C;
+    var nowDAJUN1=nowResult.DAJUN1_C;
+    
+    var routeArray=[nowTime,nowYIWGS1,nowGRWGS1,nowGRWGS2,nowDAJUN1];
+    for(i=0;i<routeArray.length;i++){
+      if(routeArray[i]<70){
+        eventArray.push(routeArray[i]);
+      }  
+    }
+    
+    res.render('test',{title:'ajax',results:results,eventArray:eventArray});  
   });
-
-  //res.render('test',{title:'ajax'});
-  //res.send(results);
+  connection.end();
 });
 
 router.all('/ajax',function(req,res,next){
+  //주기적으로 spine차트의 그림을 표시
   var connection=mysql.createConnection({
     host:'localhost',
-    user:'nodejs',
-    password:'rmfltmeh',
+    user:'root',
+    password:'',
     database:'oneview',
   });
 
   connection.connect();
   connection.query('select * from route',function(err,results){
     console.log('xxx');
-    res.send({result:results});
-    //res.send(results);
+    res.send(results);  //send로 배열을 전달
   });
 });
 

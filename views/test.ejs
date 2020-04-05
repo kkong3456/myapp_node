@@ -107,7 +107,7 @@ jQuery(function() {
     <center><b>EVENT Window</b></center>
     <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>
       <% for(var i=0;i<eventValueArray.length;i++){%>
-        <p><%=eventValueArray[i]%></p>
+        <%=eventValueArray[i]%><br>
       <%}%>
       </div>
     <div id="eventFakeWindow"></div>
@@ -192,26 +192,9 @@ function displayEvent(result,cscf){
   result.GRWGS2L.unshift('GRWGS2L');
   /////////// 더미코드 끝
 
-  // var newTimeItem=result.TIME[result.TIME.length-1];
-  // var headYIWGS1Item=result.YIWGS1[0];   //루트네임
-  // var newYIWGS1Item=result.YIWGS1[result.YIWGS1.length-1]; //최신데이터
-  //
-  // var headGRWGS1Item=result.GRWGS1[0];
-  // var newGRWGS1Item=result.GRWGS1[result.GRWGS1.length-1];
-  //
-  // var headGRWGS2Item=result.GRWGS2[0];
-  // var newGRWGS2Item=result.GRWGS2[result.GRWGS2.length-1];
-  //
-  // var wgsName=new Array(headYIWGS1Item,headGRWGS1Item,headGRWGS2Item);   //순서대로
-  // var newCompletValue=new Array(newYIWGS1Item,newGRWGS1Item,newGRWGS2Item); //순서대로
-  //
 
-  jQuery('#eventFakeWindow').load('/event.txt',function(responseText,status,XHR){
-    var xxx=responseText.replace(/,/g,''); //event.txt파일이 배열이르모 ','을 앖에애 힌디/
-    //console.log(xxx);
 
-  //  jQuery('#eventWindow').html(xxx);
-  });
+
 
 
 
@@ -729,6 +712,7 @@ var completeChart3=c3.generate({
   },
 });  //end chart 완요율
 
+
 //CSCF1 시도호 ajax
 setInterval(function(){
   jQuery.ajax({
@@ -849,6 +833,16 @@ setInterval(function(){
     });
   }).fail(function(a,b,c){
     console.log('xxx');
+  });
+},6000);
+
+// 이벤트 정보 가져오기
+setInterval(function(){
+  jQuery.ajax({
+    url:'/eventAjax',
+    method:'GET',
+  }).done(function(result){
+      jQuery('#eventWindow').html(result);
   });
 },6000);
 

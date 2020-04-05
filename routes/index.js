@@ -41,7 +41,7 @@ router.all('/test',function(req,res,next){
       var result1=result[0];  //sql1_1의 결과값
       var result2=result[1];
 
-      console.log(result1[0]);
+      console.log(result1);
 
       //for(var i=0;i<result1.length;i++){
       for (var i=0;i<2;i++){  //j는 CSCF, i는 내림차순 시간 순서
@@ -74,7 +74,7 @@ router.all('/ajax',function(req,res,next){
   });
 
   connection.connect();
-  connection.query('select * from route',function(err,results){
+  connection.query('select * from cscf1',function(err,results){
     console.log('ajax');
     res.send(results);  //send로 배열을 전달
   });

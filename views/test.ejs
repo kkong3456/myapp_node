@@ -193,11 +193,6 @@ function displayEvent(result,cscf){
   /////////// 더미코드 끝
 
 
-
-
-
-
-
   //var beforeAnimationCnt=0;
   var animationCnt=(jQuery('#eventWindow>br').size());
 
@@ -242,13 +237,7 @@ function displayCall(result){
 
 var callChart1=c3.generate({
   bindto:'#callChart1',
-  //data:{
-  //x:'TIME',
-  //url:'/call_count.json',
-  //mimeType:'json',
-  //type:'spline',
-  //hide:['TIME'],
-  //},
+
    data:{
     x:'TIME',
     hide:['TIME'],
@@ -256,23 +245,28 @@ var callChart1=c3.generate({
     columns:[
 
       ['TIME',
-        <%for(i in results){%>
+        <%for(i in results.reverse()){%> //시간순으로  results배열을 변경
           <%=results[i].TIME%>,
         <%}%>
       ],
-      ['YIWGS1_A',
+      ['YIWGS1',
         <%for(i in results){%>
           <%=results[i].YIWGS1_A%>,
         <%}%>
       ],
-      ['GRWGS1_A',
+      ['GRWGS1',
         <%for(i in results){%>
           <%=results[i].GRWGS1_A%>,
         <%}%>
       ],
-      ['GRWGS2_A',
+      ['GRWGS2',
         <%for(i in results){%>
           <%=results[i].GRWGS2_A%>,
+        <%}%>
+      ],
+      ['DAJUN1',
+        <%for(i in results){%>
+          <%=results[i].DAJUN1_A%>,
         <%}%>
       ],
     ],
@@ -723,15 +717,17 @@ setInterval(function(){
   }).done(function(result){
 
     var TIME=new Array('TIME');
-    var YIWGS1_A=new Array('YIWGS1_A');
-    var GRWGS1_A=new Array('GRWGS1_A');
-    var GRWGS2_A=new Array('GRWGS2_A');
+    var YIWGS1_A=new Array('YIWGS1');
+    var GRWGS1_A=new Array('GRWGS1');
+    var GRWGS2_A=new Array('GRWGS2');
+    var DAJUN1_A=new Array('DAJUN1')
 
     for(var i=0;i<result.length;i++){
       TIME.push(result[i].TIME);
       YIWGS1_A.push(result[i].YIWGS1_A);
       GRWGS1_A.push(result[i].GRWGS1_A);
       GRWGS2_A.push(result[i].GRWGS2_A);
+      DAJUN1_A.push(result[i].DAJUN1_A);
     }
     //displayCall(result);
 
@@ -741,6 +737,7 @@ setInterval(function(){
           YIWGS1_A,
           GRWGS1_A,
           GRWGS2_A,
+          DAJUN1_A,
         ],
     });
   }).fail(function(a,b,c){
@@ -818,7 +815,7 @@ setInterval(function(){
     dataType:'json',
   }).done(function(result){
     //console.log(result.TIME);
-    displayEvent(result,cscf='CSCF#2');
+    //displayEvent(result,cscf='CSCF#2');
 
     completeChart2.load({
       columns:[
@@ -836,7 +833,7 @@ setInterval(function(){
   });
 },6000);
 
-// 이벤트 정보 가져오기
+// 이벤트 정보 가져오기 ajax
 setInterval(function(){
   jQuery.ajax({
     url:'/eventAjax',

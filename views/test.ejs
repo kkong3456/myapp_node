@@ -106,8 +106,8 @@ jQuery(function() {
   <div class="eight wide column parent">
     <center><b>EVENT Window</b></center>
     <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>
-      <% for(var i=0;i<eventArray.length;i++){%>
-        <p><%=eventArray[i]%></p>
+      <% for(var i=0;i<eventValueArray.length;i++){%>
+        <p><%=eventValueArray[i]%></p>
       <%}%>
       </div>
     <div id="eventFakeWindow"></div>
@@ -180,7 +180,7 @@ function timeLapse(){
 //Event Window창에 경보내용 표시
 function displayEvent(result,cscf){
 
- 
+
 
   //완료율 차트 그릴때 범례에 각 완료률이 초기값 나오는 버그 제거용 더미 코
   result.TIME.unshift('TIME');  //배열 맨 앞에 루트네임을 위치
@@ -271,7 +271,7 @@ var callChart1=c3.generate({
     hide:['TIME'],
     type:'spline',
     columns:[
-    
+
       ['TIME',
         <%for(i in results){%>
           <%=results[i].TIME%>,
@@ -505,7 +505,7 @@ var completeChart1=c3.generate({
     hide:['TIME'],
     type:'spline',
     columns:[
-    
+
       ['TIME',
         <%for(i in results){%>
           <%=results[i].TIME%>,
@@ -737,12 +737,12 @@ setInterval(function(){
     async:false,
     dataType:'json',
   }).done(function(result){
-   
+
     var TIME=new Array('TIME');
     var YIWGS1_A=new Array('YIWGS1_A');
     var GRWGS1_A=new Array('GRWGS1_A');
     var GRWGS2_A=new Array('GRWGS2_A');
-    
+
     for(var i=0;i<result.length;i++){
       TIME.push(result[i].TIME);
       YIWGS1_A.push(result[i].YIWGS1_A);
@@ -750,7 +750,7 @@ setInterval(function(){
       GRWGS2_A.push(result[i].GRWGS2_A);
     }
     //displayCall(result);
-    
+
     callChart1.load({
         columns:[
           TIME,
@@ -804,7 +804,7 @@ setInterval(function(){
     var YIWGS1_C=new Array('YIWGS1_C');
     var GRWGS1_C=new Array('GRWGS1_C');
     var GRWGS2_C=new Array('GRWGS2_C');
-    
+
     for(var i=0;i<result.length;i++){
       TIME.push(result[i].TIME);
       YIWGS1_C.push(result[i].YIWGS1_C);
@@ -812,7 +812,7 @@ setInterval(function(){
       GRWGS2_C.push(result[i].GRWGS2_C);
     }
     //displayCall(result);
-    
+
     completeChart1.load({
         columns:[
           TIME,

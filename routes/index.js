@@ -72,60 +72,71 @@ function getNewCompleteData(){
 
 var connection=mysql.createConnection({
   host:'localhost',
-  user:'root',
-  password:'',
+  user:'nodejs',
+  password:'rmfltmeh',
   database:'oneview',
   multipleStatements:true,
 });
 
-router.all('/test',function(req,res,next){
-  var sql1='select * from route order by TIME desc limit 1;';  //최신 데이터
-  var sql2='select * from route1;';  //초기 spine차트 그림 데이터
-   
-  var routeArray=[];
-  var eventArray=[];
+function getData(err,results){
 
-  //connection.connect();
- 
-  connection.query(sql1 ,function(err,results,fields){
-    //if(err) throw err;
-    var nowResult=results[0]; //sql1의 결과값
-    var results=results[1];  //sql2의 결과값
-    
-    
-    //console.log(nowResult);
-    console.log(results);
-    
-    var nowTime=nowResult.TIME;
-    var nowYIWGS1=nowResult.YIWGS1_C;
-    var nowGRWGS1=nowResult.GRWGS1_C;
-    var nowGRWGS2=nowResult.GRWGS2_C;
-    var nowDAJUN1=nowResult.DAJUN1_C;
-    
-    var routeArray=[nowTime,nowYIWGS1,nowGRWGS1,nowGRWGS2,nowDAJUN1];
-    for(i=0;i<routeArray.length;i++){
-      if(routeArray[i]<70){
-        eventArray.push(routeArray[i]);
-      }  
+}
+
+router.all('/test',function(req,res,next){
+  var sql1_1='select * from cscf1 order by TIME desc limit 1;';  //최신 데이터
+  var sql1_2='select * from cscf1;';  //초기 spine차트 그림 데이터
+
+  var sql2_1='select * from cscf2 order by TIME desc limit 1;';
+  var sql2_2='select * from cscf2;';
+
+
+  var completValueArray=[];
+  var eventValueArray=[];
+  var routeName=['ETC','YIWGS1','GRWGS1','GRWGS2','DAJUN1']
+
+  connection.query(sql1_1 + sql1_2 + sql2_1 + sql2_2 ,function(err,result,fields){
+
+    if(err) throw err;
+    var nowResult1=result[0]; //sql1의 결과값
+    var result1=result[1];  //sql2의 결과값
+    var nowResult2=result[2];
+    var result2=result[3];
+
+    var nowTime=nowResult1[0].TIME;
+    var nowYIWGS1=nowResult1[0].YIWGS1_C;
+    var nowGRWGS1=nowResult1[0].GRWGS1_C;
+    var nowGRWGS2=nowResult1[0].GRWGS2_C;
+    var nowDAJUN1=nowResult1[0].DAJUN1_C;
+
+
+    var completeValueArray=[nowTime,nowYIWGS1,nowGRWGS1,nowGRWGS2,nowDAJUN1];
+    for(i=0;i<completeValueArray.length;i++){
+      //console.log('completeValueArray:'+completeValueArray[i]);
+      if(completeValueArray[i]<70){
+        eventValueArray.push('CSCF#1 '+completeValueArray[0]+' '+routeName[i]+' ('+completeValueArray[i]+'%)');
+      }
     }
-    
-    res.render('test',{title:'ajax',results:results,eventArray:eventArray});  
-  });
-  connection.end();
+
+    console.log(result1);
+    res.render('test',{title:'cscf1',results:result1,eventValueArray:eventValueArray});
+
+  });//connction.query end
+
+
 });
 
 router.all('/ajax',function(req,res,next){
   //주기적으로 spine차트의 그림을 표시
   var connection=mysql.createConnection({
     host:'localhost',
-    user:'root',
-    password:'',
+    user:'nodejs',
+    password:'rmfltmeh',
     database:'oneview',
   });
 
   connection.connect();
   connection.query('select * from route',function(err,results){
-    console.log('xxx');
+    console.log('ajax');
     res.send(results);  //send로 배열을 전달
   });
 });

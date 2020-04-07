@@ -12,11 +12,6 @@
   <script type='text/javascript' src='/d3/d3.min.js' charset='utf-8'></script>
   <script type='text/javascript' src='/c3js/c3.min.js'></script>
 <style>
-
-  #layout{
-    padding:10px;
-    margin:10px;
-  }
   .eight{
     /* background-color:#eeeeee; */
   }
@@ -51,33 +46,14 @@
      fill:white;
   }
 
-  .neStatus{
-    border:2px solid #cccccc;
-    
-    height:150px; 
-  }
-  
-  .alarmContent{
-    border-left:2px solid #cccccc;
-    border-right:2px solid #cccccc;
-  }
-  
   #eventWindow,#runaway{
-    border-left:2px solid #cccccc;
-    border-right:2px solid #cccccc;
-    border-bottom:2px solid #cccccc;
-    height:300px;
+    border:1px solid #cccccc;
+    height:100px;
     overflow:auto;
   }
-  
-
   .animated.bounce{
     /* animation-duration:5s;
     animation-delay:10s; */
-    
-    /*height:80px;*/
-    margin-bottom:20px;
-    font-size:2.0em;
   }
   #block{
     height:10px;
@@ -98,54 +74,50 @@ jQuery(function() {
 
 </head>
 <body>
-
-<div id='layout'><!--좌우 기본공간 띄우기 전체 레이아웃-->
-<div class="ui grid">
-<div class="six wide column">
-  <h3 class="animated  bounce slower">kt VoLTE One-View - <%=title%></h3>
-</div>
-<div class="ten wide column">
-  <div class="ui four item menu">
-    <a class="active item">WGS</a>
-    <a class="item">IBCF</a>
-    <a class="item">TAS</a>
-    <a class="item">Console</a>
-  </div>
-</div>
-</div><!--ui grid -->
-
-
-<div class="ui divided grid">
-  <div class="three column row">  
-    <div class="left floated column parent">
-      <div class="neStatus">CSCF-정상</div>
-      <div class="alarmContent"><i class="big green bell icon"></i>알람내역</div>
-      <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>
-        <% for(var i=0;i<eventValueArray.length;i++){%>
-          <%=eventValueArray[i]%><br>
-        <%}%>
+<div class="ui grid container">
+  <div class="sixteen wide column"><h3 class="animated  bounce slower"><center>VoLTE 복합장애 감시 시스템 - <%=title%></center></h3></div>
+  <!-- <div class="eight wide column">
+    <div class="ui loading selection dropdown">
+      Select CSCF ??<i class="dropdown icon"></i>
+      <div class="menu">
+        <div class="item"><a href='#cscf1' title='CSCF#1' alt='CSCF#1'>CSCF#1</a></div>
+        <div class="item"><a href='#cscf2' title='CSCF#2' alt='CSCF#2'>CSCF#2</a></div>
+        <div class="item"><a href='#cscf3' title='CSCF#3' alt='CSCF#3'>CSCF#3</a></div>
+        <div class="item"><a href='#cscf4' title='CSCF#4' alt='CSCF#4'>CSCF#4</a></div>
+        <div class="item"><a href='#cscf5' title='CSCF#5' alt='CSCF#5'>CSCF#5</a></div>
+        <div class="item"><a href='#vcscf1' title='vCSCF#1' alt='vCSCF#1'>vCSCF#1</a></div>
+        <div class="item"><a href='#vcscf2' title='vCSCF#2' alt='vCSCF#2'>vCSCF#2</a></div>
       </div>
     </div>
-    <div class="center floated column">
-      <div class="neStatus">IBCF-정상</div>
-      <div class="alarmContent"><i class="big green bell icon"></i>알람내역</div>
-      <div id="runaway" class='animated bounceInRight delay-0s faster'><%=title%></div>
+  </div> -->
+  <!-- <div class="seven wide column">
+    <div class="ui loading selection dropdown">
+      select Service ??<i class="dropdown icon"></i>
+      <div class="menu">
+        <div class="item"><a href='/cscf1' title='CSCF#1' alt='CSCF#1'>EVENT</a></div>
+        <div class="item"><a href='/cscf2' title='CSCF#2' alt='CSCF#2'>폭주호</a></div>
+      </div>
     </div>
-    <div class="right floated column">
-      <div class="neStatus">TAS-정상</div>
-      <div class="alarmContent"><i class="big green bell icon"></i>알람내역</div>
-      <div id="runaway" class='animated bounceInRight delay-0s faster'><%=title%></div>
-    </div>
-  </div> <!-- three column row end-->
-
-  <div class="row">
-    <div style="width:65.0%;border:2px solid #cccccc;margin-left:0.8%;margin-right:0.8%;height:100px;">폭주호</div>
-    <div style="width:31.7%;border:2px solid #cccccc;margin-left:0.8%;margin-right:0.8%;height:100px;">절단건수</div>
   </div>
-</div> <!-- ui divided grid-->
+  <div class="one wide column">
+
+    <div>WARNNING<i class="volume up icon"></i></div>
+  </div> -->
+  <div class="eight wide column parent">
+    <center><b>EVENT Window</b></center>
+    <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>
+      <% for(var i=0;i<eventValueArray.length;i++){%>
+        <%=eventValueArray[i]%><br>
+      <%}%>
+      </div>
+    <div id="eventFakeWindow"></div>
+  </div>
+  <div class="eight wide column">
+    <center><b>RUNAWAY Call NO</b></center>
+    <div id="runaway" class='animated bounceInRight delay-0s faster'><%=title%></div>
+  </div>
 
 
-<div class="ui grid">
   <div class="eight wide column">
     <center id="cscf1"><b class="animated  zoomIn slower">CSCF#1 루트별 시도호</b></center>
     <div id='callChart1' class='animated bounceInLeft delay-0s fast'></div>
@@ -156,8 +128,6 @@ jQuery(function() {
     <center><b>CSCF#1 루트별 완료율</a></b></center>
     <div id='completeChart1' class="animated bounceInRight delay-0s fast"></div>
   </div>
-
-
 
   <div class="eight wide column">
     <center id="cscf2"><b>CSCF#2 루트별 시도호</b></center>
@@ -178,9 +148,7 @@ jQuery(function() {
     <center><b>CSCF#3 루트별 완료율</a></b></center>
     <div id='completeChart3'></div>
   </div>
-</div> <!-- ui grid end-->
-</div> <!-- 전체 레이아웃 -->
-
+</div><!--container-->
 
 <script>
   var monitoringTime=600000;

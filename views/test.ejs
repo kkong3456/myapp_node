@@ -11,11 +11,13 @@
   <link rel='stylesheet' href='/c3js/c3.css' type='text/css' media='all'>
   <script type='text/javascript' src='/d3/d3.min.js' charset='utf-8'></script>
   <script type='text/javascript' src='/c3js/c3.min.js'></script>
+  <meta name="viewport" content="width=device-width,inital-scale=1.0">
 <style>
 
   #layout{
     padding:10px;
     margin:10px;
+    
   }
   .eight{
     /* background-color:#eeeeee; */
@@ -51,15 +53,55 @@
      fill:white;
   }
 
-  .neStatus{
+  .neStatus {
     border:2px solid #cccccc;
-    
     height:150px; 
+    vertical-align:middle;
+  }
+  .neStatus p{
+    line-height:150px;
+    /*display:block;*/
+    font-size:3.5em;
+    font-weight:bold; 
+    float:left;
+    margin-left:25%;
+    margin-bottom:0;
   }
   
+
+  /* 동그라미 */
+  .neStatus #cscfCircle,#ibcfCircle,#tasCircle{
+    width:100px;
+    height:100px;
+    border-radius:100%;
+    background:#d2ff52;
+    background:-moz-radial-gradient(center,ellipse cover,#d2ff52 0%,#91e842 100%);
+    background:-webkit-radial-gradient(center,ellipse cover,#d2ff52 0%,#91e842 100%);
+    /*padding:50px 40px;*/
+    text-align:center;
+    line-height:10px;
+    position:relative;
+    top:15%;
+    left:5%; 
+    
+    box-shadow:0 0 22px red;
+    display:block;
+  
+    float:left;
+  }
+  /* 동그라미 속 글자(정상/비정상) */
+  .neStatus #cscfCircle p,.neStatus #ibcfCircle p,.neStatus #tasCircle p{
+    font-size:2em;
+    position:relative;
+    top:-25%;
+  }
+  
+
   .alarmContent{
+    clear:both;
     border-left:2px solid #cccccc;
     border-right:2px solid #cccccc;
+  
   }
   
   #eventWindow,#runaway{
@@ -100,13 +142,14 @@ jQuery(function() {
 <body>
 
 <div id='layout'><!--좌우 기본공간 띄우기 전체 레이아웃-->
+
 <div class="ui grid">
 <div class="six wide column">
   <h3 class="animated  bounce slower">kt VoLTE One-View - <%=title%></h3>
 </div>
 <div class="ten wide column">
   <div class="ui four item menu">
-    <a class="active item">WGS</a>
+    <a class="item">WGS</a>
     <a class="item">IBCF</a>
     <a class="item">TAS</a>
     <a class="item">Console</a>
@@ -118,7 +161,10 @@ jQuery(function() {
 <div class="ui divided grid">
   <div class="three column row">  
     <div class="left floated column parent">
-      <div class="neStatus">CSCF-정상</div>
+      <div class="neStatus">
+        <p>WGS</p>
+        <div id="cscfCircle"><p>정상</p></div>
+      </div>
       <div class="alarmContent"><i class="big green bell icon"></i>알람내역</div>
       <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>
         <% for(var i=0;i<eventValueArray.length;i++){%>
@@ -127,12 +173,19 @@ jQuery(function() {
       </div>
     </div>
     <div class="center floated column">
-      <div class="neStatus">IBCF-정상</div>
+      <div class="neStatus">
+        <p>IBCF</p>
+        <div id="ibcfCircle"><p>정상</p></div>
+      </div>
+      
       <div class="alarmContent"><i class="big green bell icon"></i>알람내역</div>
       <div id="runaway" class='animated bounceInRight delay-0s faster'><%=title%></div>
     </div>
     <div class="right floated column">
-      <div class="neStatus">TAS-정상</div>
+      <div class="neStatus">
+        <p>TAS</p>
+        <div id="tasCircle"><p>정상</p></div>
+      </div>
       <div class="alarmContent"><i class="big green bell icon"></i>알람내역</div>
       <div id="runaway" class='animated bounceInRight delay-0s faster'><%=title%></div>
     </div>

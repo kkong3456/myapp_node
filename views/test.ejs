@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head><title><%=title%></title>
@@ -9,136 +10,12 @@
   <script type='text/javascript' src='/stylesheets/semantic.js'></script>
   <script type='text/javascript' src='/UI-Dropdown-master/dropdown.min.js'></script>
   <link rel='stylesheet' href='/c3js/c3.css' type='text/css' media='all'>
+  <link rel='stylesheet' href='/layout.css' type='text/css' media='all'>
   <script type='text/javascript' src='/d3/d3.min.js' charset='utf-8'></script>
   <script type='text/javascript' src='/c3js/c3.min.js'></script>
   <meta name="viewport" content="width=device-width,inital-scale=1.0">
-<style>
-
-  #layout{
-    padding:10px;
-    margin:10px;
-    
-  }
-  .eight{
-    /* background-color:#eeeeee; */
-  }
-
-  #callChart1 svg,#completeChart1 svg,#callChart2 svg,#completeChart2 svg,
-  #callChart3 svg,#completeChart3 svg
-  {
-    background-color:#454545;
-  }
-  /* x축 선색 */
-  .c3 .c3-axis-x path,
-  .c3 .c3-axis-x line{
-    stroke:#ddd;
-  }
-
-  .c3 .c3-axis-y path,
-  .c3 .c3-axis-y lines{
-    stroke:#ddd;
-  }
-  /* x 축 글자 색*/
-  .c3 .c3-axis-x{
-    stroke:white;
-    font-weight:100;
-  }
-
-  .c3 .c3-axis-y{
-    stroke:white;
-    font-weight:100;
-  }
-  /*아래 범레의 글자색 변경*/
-  .c3 .c3-legend-item{
-     fill:white;
-  }
-
-  .neStatus {
-    border:2px solid #cccccc;
-    height:150px; 
-    vertical-align:middle;
-  }
-  .neStatus p{
-    line-height:150px;
-    /*display:block;*/
-    font-size:3.5em;
-    font-weight:bold; 
-    float:left;
-    margin-left:25%;
-    margin-bottom:0;
-  }
-  
-
-  /* 동그라미 */
-  .neStatus #cscfCircle,#ibcfCircle,#tasCircle{
-    width:100px;
-    height:100px;
-    border-radius:100%;
-    background:#d2ff52;
-    background:-moz-radial-gradient(center,ellipse cover,#d2ff52 0%,#91e842 100%);
-    background:-webkit-radial-gradient(center,ellipse cover,#d2ff52 0%,#91e842 100%);
-    /*padding:50px 40px;*/
-    text-align:center;
-    line-height:10px;
-    position:relative;
-    top:15%;
-    left:5%; 
-    
-    box-shadow:0 0 22px red;
-    display:block;
-  
-    float:left;
-  }
-  /* 동그라미 속 글자(정상/비정상) */
-  .neStatus #cscfCircle p,.neStatus #ibcfCircle p,.neStatus #tasCircle p{
-    font-size:2em;
-    position:relative;
-    top:-25%;
-  }
-  
-
-  .alarmContent{
-    clear:both;
-    border-left:2px solid #cccccc;
-    border-right:2px solid #cccccc;
-  
-  }
-  
-  #eventWindow,#runaway{
-    border-left:2px solid #cccccc;
-    border-right:2px solid #cccccc;
-    border-bottom:2px solid #cccccc;
-    height:300px;
-    overflow:auto;
-  }
-  
-
-  .animated.bounce{
-    /* animation-duration:5s;
-    animation-delay:10s; */
-    
-    /*height:80px;*/
-    margin-bottom:20px;
-    font-size:2.0em;
-  }
-  #block{
-    height:10px;
-    background-color:red;
-  }
-  /*가짜 이벤트 창 : 이벤트 배열 ,이 표시됨 */
-  #eventFakeWindow{
-    display:none;
-  }
-</style>
-<script>
-jQuery(function() {
-  jQuery('.ui.dropdown').dropdown();
-  //jQuery('#eventWindow').load('/event.txt');
-
-});
-</script>
-
 </head>
+
 <body>
 
 <div id='layout'><!--좌우 기본공간 띄우기 전체 레이아웃-->
@@ -149,9 +26,9 @@ jQuery(function() {
 </div>
 <div class="ten wide column">
   <div class="ui four item menu">
-    <a class="item">WGS</a>
-    <a class="item">IBCF</a>
-    <a class="item">TAS</a>
+    <a href="/wgs" class="item">WGS</a>
+    <a href="/ibcf" class="item">IBCF</a>
+    <a href="/tas" class="item">TAS</a>
     <a class="item">Console</a>
   </div>
 </div>
@@ -165,7 +42,12 @@ jQuery(function() {
         <p>WGS</p>
         <div id="cscfCircle"><p>정상</p></div>
       </div>
-      <div class="alarmContent"><i class="big green bell icon"></i>알람내역</div>
+      <div class="alarmContent">
+        <p>
+          <i class="large green bell icon"></i>
+          알람내역
+        </p>
+      </div>
       <div id="eventWindow" class='animated bounceInLeft delay-0s faster'>
         <% for(var i=0;i<eventValueArray.length;i++){%>
           <%=eventValueArray[i]%><br>
@@ -178,756 +60,59 @@ jQuery(function() {
         <div id="ibcfCircle"><p>정상</p></div>
       </div>
       
-      <div class="alarmContent"><i class="big green bell icon"></i>알람내역</div>
-      <div id="runaway" class='animated bounceInRight delay-0s faster'><%=title%></div>
+      <div class="alarmContent">
+        <p>
+          <i class="large green bell icon"></i>
+            알람내역
+        </p>
+      </div>
+      <div id="eventWindow" class='animated bounceInRight delay-0s faster'><%=title%></div>
     </div>
     <div class="right floated column">
       <div class="neStatus">
         <p>TAS</p>
         <div id="tasCircle"><p>정상</p></div>
       </div>
-      <div class="alarmContent"><i class="big green bell icon"></i>알람내역</div>
-      <div id="runaway" class='animated bounceInRight delay-0s faster'><%=title%></div>
+      <div class="alarmContent">
+        <p>
+          <i class="large green bell icon"></i>
+            알람내역
+        </p>
+      </div>
+      <div id="eventWindow" class='animated bounceInRight delay-0s faster'><%=title%></div>
     </div>
   </div> <!-- three column row end-->
+  
+  <div class="three column row">
+    <div class="left floated column">
+      <div class="runAway">
+        <p><i class="green large phone sign icon"></i>발신폭주호 Top 10</p> 
+      </div>
+    </div>
+    <div class="center floated column">
+      <div class="runAway">
+        <p><i class="green large phone sign icon"></i>착신폭주호 Top 10</p> 
+      </div>
+    </div>
+    <div class="right floated column">
+      <div class="runAway">
+        <p><i class="green large phone sign icon"></i>절단건수</p>
+      </div>
+    </div>
+    
+  </div><!--three column row end-->
 
   <div class="row">
-    <div style="width:65.0%;border:2px solid #cccccc;margin-left:0.8%;margin-right:0.8%;height:100px;">폭주호</div>
-    <div style="width:31.7%;border:2px solid #cccccc;margin-left:0.8%;margin-right:0.8%;height:100px;">절단건수</div>
+    <div class="runAway" style="width:65.0%;border:2px solid #cccccc;margin-left:0.8%;margin-right:0.8%;height:100px;">
+      <p><i class="green large phone sign icon"></i>폭주호</p> 
+    </div>
+    <div class="runAway1" style="width:31.7%;border:2px solid #cccccc;margin-left:0.8%;margin-right:0.8%;height:100px;">
+      <p><i class="green large phone sign icon"></i>절단건수</p>
+    </div>
   </div>
 </div> <!-- ui divided grid-->
 
 
-<div class="ui grid">
-  <div class="eight wide column">
-    <center id="cscf1"><b class="animated  zoomIn slower">CSCF#1 루트별 시도호</b></center>
-    <div id='callChart1' class='animated bounceInLeft delay-0s fast'></div>
-  </div>
 
-  <div class="eight wide column">
-    <a href="#cscf2"></a><!--책갈피-->
-    <center><b>CSCF#1 루트별 완료율</a></b></center>
-    <div id='completeChart1' class="animated bounceInRight delay-0s fast"></div>
-  </div>
-
-
-
-  <div class="eight wide column">
-    <center id="cscf2"><b>CSCF#2 루트별 시도호</b></center>
-    <div id='callChart2' id='cscf2' class='animated bounceInLeft delay-0s slow'></div>
-  </div>
-
-  <div class="eight wide column">
-    <center><b>CSCF#2 루트별 완료율</a></b></center>
-    <div id='completeChart2' class='animated bounceInRight delay-0s slow'></div>
-  </div>
-
-  <div class="eight wide column">
-    <center id="cscf3"><b>CSCF#3 루트별 시도호</b></center>
-    <div id='callChart3' class='c3-line-ata2'></div>
-  </div>
-
-  <div class="eight wide column">
-    <center><b>CSCF#3 루트별 완료율</a></b></center>
-    <div id='completeChart3'></div>
-  </div>
-</div> <!-- ui grid end-->
-</div> <!-- 전체 레이아웃 -->
-
-
-<script>
-  var monitoringTime=600000;
-  var timeArray=new Array();
-  var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-  var animationCnt=0;
-  var beforeAnimationCnt=0;
-//x축시간 표시(사용안함)
-function timeLapse(){
-  var now=new Date();
-  var nowHour=now.getHours();
-  var nowMinute=now.getMinutes();
-  var epochMonitoringStartTime=now-monitoringTime;
-  var monitoringStartTime=new Date(epochMonitoringStartTime);
-  var monitoringStartTimeHour=monitoringStartTime.getHours();
-  var monitoringStartTimeMinute=monitoringStartTime.getMinutes();
-
-  for(var i=0;i<=monitoringTime/60000;i++){
-    if(monitoringStartTimeMinute+i<60){
-      timeArray.push(monitoringStartTimeHour+':'+(monitoringStartTimeMinute+i));
-    }else{
-      var j=60;
-      timeArray.push(nowHour+':'+((monitoringStartTimeMinute+i)-j));
-    }
-  }
-  return timeArray;
-}
-
-//Event Window창에 경보내용 표시
-function displayEvent(result,cscf){
-
-
-
-  //완료율 차트 그릴때 범례에 각 완료률이 초기값 나오는 버그 제거용 더미 코
-  result.TIME.unshift('TIME');  //배열 맨 앞에 루트네임을 위치
-  result.YIWGS1.unshift('YIWGS1');
-  result.YIWGS1L.unshift('YIWGS1L');
-  result.GRWGS1.unshift('GRWGS1');
-  result.GRWGS1L.unshift('GRWGS1L');
-  result.GRWGS2.unshift('GRWGS2');
-  result.GRWGS2L.unshift('GRWGS2L');
-  /////////// 더미코드 끝
-
-
-  //var beforeAnimationCnt=0;
-  var animationCnt=(jQuery('#eventWindow>br').size());
-
-
-  // for(var i=0;i<newCompletValue.length;i++){
-  //    if(newCompletValue[i]<60){
-  //      animationCnt='T';
-  //      jQuery('#eventWindow').prepend('<p>'+newTimeItem+' '+cscf+' '+wgsName[i]+' 완료율 하락 경보!! ('+newCompletValue[i]+')</p>');
-  //     // console.log(jQuery('#eventWindow > p').size());
-  //    }
-  //  }
-
-  if(animationCnt!=beforeAnimationCnt){
-    var elem=document.getElementById('eventWindow');
-    try{
-      elem.classList.remove('bounceInLeft');
-    }catch(e){
-
-    }
-    elem.classList.add('shake');
-    elem.addEventListener('animationend',function(){
-    elem.classList.remove('shake');
-    });
-  }
-
-  beforeAnimationCnt=animationCnt;
-}
-
-//시도호 그래프 데이터 가공
-
-function displayCall(result){
-  result.TIME.unshift('TIME');
-  result.YIWGS1.unshift('YIWGS1');
-  result.YIWGS1L.unshift('YIWGS1L');
-  result.GRWGS1.unshift('GRWGS1');
-  result.GRWGS1L.unshift('GRWGS1L');
-  result.GRWGS2.unshift('GRWGS2');
-  result.GRWGS2L.unshift('GRWGS2L');
-}
-
-// CSCF 시도호 차트
-
-var callChart1=c3.generate({
-  bindto:'#callChart1',
-
-   data:{
-    x:'TIME',
-    hide:['TIME'],
-    type:'spline',
-    columns:[
-
-      ['TIME',
-        <%for(i in results.reverse()){%> //시간순으로  results배열을 변경
-          <%=results[i].TIME%>,
-        <%}%>
-      ],
-      ['YIWGS1',
-        <%for(i in results){%>
-          <%=results[i].YIWGS1_A%>,
-        <%}%>
-      ],
-      ['GRWGS1',
-        <%for(i in results){%>
-          <%=results[i].GRWGS1_A%>,
-        <%}%>
-      ],
-      ['GRWGS2',
-        <%for(i in results){%>
-          <%=results[i].GRWGS2_A%>,
-        <%}%>
-      ],
-      ['DAJUN1',
-        <%for(i in results){%>
-          <%=results[i].DAJUN1_A%>,
-        <%}%>
-      ],
-    ],
-   },
-  zoom:{
-    enabled:true,
-    type:'scroll',
-  },
-  grid:{
-    x:{
-      show:true
-    },
-    y:{
-      show:true
-    }
-  },
-
-  tooltip:{
-    grouped:false
-  },
-  legend:{
-    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
-    item:{
-      onclick:function(id){
-      //  console.log(id);
-      }
-    },
-    item:{
-      onmouseover:function(id){
-        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
-
-        callChart1.hide(routeName);
-        callChart1.show([id,id+'L']);
-
-        }).on('mouseout','.c3-legend-item-'+id,function(){
-          callChart1.show(routeName);
-        });
-      }
-    }
-  },
-  axis:{
-    x:{
-      type:'category',
-      //categories:'TIME',
-      tick:{
-        centered:true,
-      }
-    },
-    y:{
-      max:30000,
-      min:100,
-      label:{
-        text:'시도호',
-        position:'outer-middle'
-      }
-    }
-  },
-  color:{
-    pattern:['#abcdef','#efefef','#cdef01']
-  },
-  transition:{
-    duration:1000
-  },
-});  //end chart 시도호
-var callChart2=c3.generate({
-  bindto:'#callChart2',
-  data:{
-  x:'TIME',
-  url:'/call_count.json',
-  mimeType:'json',
-  type:'spline',
-  hide:['TIME'],
-
-  },
-  grid:{
-    x:{
-      show:true
-    },
-    y:{
-      show:true
-    }
-  },
-
-  tooltip:{
-    grouped:false
-  },
-  legend:{
-    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
-    item:{
-      onclick:function(id){
-      //  console.log(id);
-      }
-    },
-    item:{
-      onmouseover:function(id){
-        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
-
-        callChart2.hide(routeName);
-        callChart2.show([id,id+'L']);
-
-        }).on('mouseout','.c3-legend-item-'+id,function(){
-          callChart2.show(routeName);
-        });
-      }
-    }
-  },
-  axis:{
-    x:{
-      type:'category',
-      //categories:'TIME',
-      tick:{
-        centered:true,
-      }
-    },
-    y:{
-      max:400,
-      min:100,
-      label:{
-        text:'시도호',
-        position:'outer-middle'
-      }
-    }
-  },
-  color:{
-    pattern:['#abcdef','#efefef','#cdef01']
-  },
-  transition:{
-    duration:1000
-  },
-});  //end chart 시도호
-var callChart3=c3.generate({
-  bindto:'#callChart3',
-  data:{
-  x:'TIME',
-  url:'/call_count.json',
-  mimeType:'json',
-  type:'spline',
-  hide:['TIME'],
-
-  },
-  grid:{
-    x:{
-      show:true
-    },
-    y:{
-      show:true
-    }
-  },
-
-  tooltip:{
-    grouped:false
-  },
-  legend:{
-    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
-    item:{
-      onclick:function(id){
-      //  console.log(id);
-      }
-    },
-    item:{
-      onmouseover:function(id){
-        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
-
-        callChart3.hide(routeName);
-        callChart3.show([id,id+'L']);
-
-        }).on('mouseout','.c3-legend-item-'+id,function(){
-          callChart3.show(routeName);
-        });
-      }
-    }
-  },
-  axis:{
-    x:{
-      type:'category',
-      //categories:'TIME',
-      tick:{
-        centered:true,
-      }
-    },
-    y:{
-      max:400,
-      min:100,
-      label:{
-        text:'시도호',
-        position:'outer-middle'
-      }
-    }
-  },
-  color:{
-    pattern:['#abcdef','#efefef','#cdef01']
-  },
-  transition:{
-    duration:1000
-  },
-});  //end chart 시도호
-
-//CSCF#1완료율 차트
-var completeChart1=c3.generate({
-  bindto:'#completeChart1',
-  //data:{
-  //x:'TIME',
-  //url:'/complete_ratio.json',
-  //mimeType:'json',
-  //type:'spline',
-  //hide:['TIME'],
-  //},
-  data:{
-    x:'TIME',
-    hide:['TIME'],
-    type:'spline',
-    columns:[
-
-      ['TIME',
-        <%for(i in results){%>
-          <%=results[i].TIME%>,
-        <%}%>
-      ],
-      ['YIWGS1_C',
-        <%for(i in results){%>
-          <%=results[i].YIWGS1_C%>,
-        <%}%>
-      ],
-      ['GRWGS1_C',
-        <%for(i in results){%>
-          <%=results[i].GRWGS1_C%>,
-        <%}%>
-      ],
-      ['GRWGS2_C',
-        <%for(i in results){%>
-          <%=results[i].GRWGS2_C%>,
-        <%}%>
-      ],
-    ],
-   },
-  grid:{
-    x:{
-      show:true
-    },
-    y:{
-      show:true
-    }
-  },
-
-  tooltip:{
-    grouped:false,
-  },
-  legend:{
-    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
-    item:{
-      onclick:function(id){
-      //  console.log(id);// 범레를 클릭했을 때 기본 동작 함수를 오버라이드 함
-      }
-    },
-    item:{
-      onmouseover:function(id){
-        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
-        //console.log('xxx');
-        completeChart1.hide(routeName);
-        completeChart1.show([id,id+'L']);
-
-        }).on('mouseout','.c3-legend-item-'+id,function(){
-          completeChart1.show(routeName);
-        });
-      }
-    }
-  },
-  axis:{
-    x:{
-      type:'category',
-      //categories:'TIME',
-      tick:{
-        centered:true
-      }
-    },
-    y:{
-      max:100,
-      min:20,
-      tick:{
-        format:d3.format('.0f')
-      },
-      label:{
-        text:'완료율',
-        position:'outer-middle'
-      }
-    }
-  },
-  color:{
-    pattern:['#abcdef','#efefef','#cdef01']
-  },
-  transition:{
-    duration:1000
-  },
-});  //end chart 완요율
-var completeChart2=c3.generate({
-  bindto:'#completeChart2',
-  data:{
-  x:'TIME',
-  url:'/complete_ratio.json',
-  mimeType:'json',
-  type:'spline',
-  hide:['TIME'],
-
-  },
-  grid:{
-    x:{
-      show:true
-    },
-    y:{
-      show:true
-    }
-  },
-
-  tooltip:{
-    grouped:false,
-  },
-  legend:{
-    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
-    item:{
-      onclick:function(id){
-        console.log(id);
-      }
-    },
-    item:{
-      onmouseover:function(id){
-        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
-        //console.log('xxx');
-        completeChart2.hide(routeName);
-        completeChart2.show([id,id+'L']);
-
-        }).on('mouseout','.c3-legend-item-'+id,function(){
-          completeChart2.show(routeName);
-        });
-      }
-    }
-  },
-  axis:{
-    x:{
-      type:'category',
-      //categories:'TIME',
-      tick:{
-        centered:true
-      }
-    },
-    y:{
-      max:100,
-      min:20,
-      tick:{
-        format:d3.format('.0f')
-      },
-      label:{
-        text:'완료율',
-        position:'outer-middle'
-      }
-    }
-  },
-  color:{
-    pattern:['#abcdef','#efefef','#cdef01']
-  },
-  transition:{
-    duration:1000
-  },
-});  //end chart 완요율
-var completeChart3=c3.generate({
-  bindto:'#completeChart3',
-  data:{
-  x:'TIME',
-  url:'/complete_ratio.json',
-  mimeType:'json',
-  type:'spline',
-  hide:['TIME'],
-
-  },
-  grid:{
-    x:{
-      show:true
-    },
-    y:{
-      show:true
-    }
-  },
-
-  tooltip:{
-    grouped:false,
-  },
-  legend:{
-    hide:['TIME','YIWGS1L','GRWGS1L','GRWGS2L'],
-    item:{
-      onclick:function(id){
-      //  console.log(id);
-      }
-    },
-    item:{
-      onmouseover:function(id){
-        var routeName=['YIWGS1','YIWGS1L','GRWGS1','GRWGS1L','GRWGS2','GRWGS2L'];
-        jQuery(document).on('mouseover',".c3-legend-item-"+id,function(){
-        //console.log('xxx');
-        completeChart3.hide(routeName);
-        completeChart3.show([id,id+'L']);
-
-        }).on('mouseout','.c3-legend-item-'+id,function(){
-          completeChart3.show(routeName);
-        });
-      }
-    }
-  },
-  axis:{
-    x:{
-      type:'category',
-      //categories:'TIME',
-      tick:{
-        centered:true
-      }
-    },
-    y:{
-      max:100,
-      min:20,
-      tick:{
-        format:d3.format('.0f')
-      },
-      label:{
-        text:'완료율',
-        position:'outer-middle'
-      }
-    }
-  },
-  color:{
-    pattern:['#abcdef','#efefef','#cdef01']
-  },
-  transition:{
-    duration:1000
-  },
-});  //end chart 완요율
-
-
-//CSCF1 시도호 ajax
-setInterval(function(){
-  jQuery.ajax({
-    url:'/ajax',
-    method:'GET',
-    async:false,
-    dataType:'json',
-  }).done(function(result){
-
-    var TIME=new Array('TIME');
-    var YIWGS1_A=new Array('YIWGS1');
-    var GRWGS1_A=new Array('GRWGS1');
-    var GRWGS2_A=new Array('GRWGS2');
-    var DAJUN1_A=new Array('DAJUN1')
-
-    for(var i=0;i<result.length;i++){
-      TIME.push(result[i].TIME);
-      YIWGS1_A.push(result[i].YIWGS1_A);
-      GRWGS1_A.push(result[i].GRWGS1_A);
-      GRWGS2_A.push(result[i].GRWGS2_A);
-      DAJUN1_A.push(result[i].DAJUN1_A);
-    }
-    //displayCall(result);
-
-    callChart1.load({
-        columns:[
-          TIME,
-          YIWGS1_A,
-          GRWGS1_A,
-          GRWGS2_A,
-          DAJUN1_A,
-        ],
-    });
-  }).fail(function(a,b,c){
-    console.log('a');
-  });
-},6000);
-//CSCF2 시도호 ajax
-setInterval(function(){
-  jQuery.ajax({
-    url:'/call_count.json',
-    method:'GET',
-    dataType:'json',
-  }).done(function(result){
-    //console.log(result.TIME);
-    displayCall(result);
-
-    callChart2.load({
-      columns:[
-        result.TIME,
-        result.YIWGS1,
-        result.YIWGS1L,
-        result.GRWGS1,
-        result.GRWGS1L,
-        result.GRWGS2,
-        result.GRWGS2L,
-      ],
-    });
-  }).fail(function(a,b,c){
-    console.log('a');
-  });
-},6000);
-
-//CSCF1 완료율 ajax
-setInterval(function(){
-
-  jQuery.ajax({
-    url:'/ajax',
-    method:'GET',
-    dataType:'json',
-  }).done(function(result){
-    //console.log(result.TIME);
-    //displayEvent(result,cscf='CSCF#1');
-
-    var TIME=new Array('TIME');
-    var YIWGS1_C=new Array('YIWGS1_C');
-    var GRWGS1_C=new Array('GRWGS1_C');
-    var GRWGS2_C=new Array('GRWGS2_C');
-
-    for(var i=0;i<result.length;i++){
-      TIME.push(result[i].TIME);
-      YIWGS1_C.push(result[i].YIWGS1_C);
-      GRWGS1_C.push(result[i].GRWGS1_C);
-      GRWGS2_C.push(result[i].GRWGS2_C);
-    }
-    //displayCall(result);
-
-    completeChart1.load({
-        columns:[
-          TIME,
-          YIWGS1_C,
-          GRWGS1_C,
-          GRWGS2_C,
-        ],
-    });
-  }).fail(function(a,b,c){
-    console.log('a');
-  });
-},6000);
-
-//cscf2 완료율 ajax
-setInterval(function(){
-  jQuery.ajax({
-    url:'/complete_ratio.json',
-    method:'GET',
-    dataType:'json',
-  }).done(function(result){
-    //console.log(result.TIME);
-    //displayEvent(result,cscf='CSCF#2');
-
-    completeChart2.load({
-      columns:[
-        result.TIME,
-        result.YIWGS1,
-        result.YIWGS1L,
-        result.GRWGS1,
-        result.GRWGS1L,
-        result.GRWGS2,
-        result.GRWGS2L,
-      ],
-    });
-  }).fail(function(a,b,c){
-    console.log('xxx');
-  });
-},6000);
-
-// 이벤트 정보 가져오기 ajax
-setInterval(function(){
-  jQuery.ajax({
-    url:'/eventAjax',
-    method:'GET',
-  }).done(function(result){
-      jQuery('#eventWindow').html(result);
-  });
-},6000);
-
-</script>
 </body>
 </html>

@@ -41,7 +41,7 @@ router.all('/test',function(req,res,next){
       var result1=result[0];  //sql1_1의 결과값
       var result2=result[1];
 
-      console.log(result1);
+      //console.log(result1);
 
       //for(var i=0;i<result1.length;i++){
       for (var i=0;i<2;i++){  //j는 CSCF, i는 내림차순 시간 순서
@@ -60,7 +60,7 @@ router.all('/test',function(req,res,next){
           }
         } //for end
       } // for end
-      res.render('test',{title:'cscf1',results:result1,eventValueArray:eventValueArray});
+      res.render('test',{title:'cscf1',eventValueArray:eventValueArray});
     });//connction.query end
 });
 
@@ -122,13 +122,8 @@ router.all('/eventAjax',function(req,res,next){
 
 
 
-
-
-
-
-
-router.get('/cscf1',function(req,res,next){
-  res.render('cscf1',{title:'CSCF#1'});
+router.get('/wgs',function(req,res,next){
+  res.render('wgs',{title:'wgs'});
   next();
 });
 

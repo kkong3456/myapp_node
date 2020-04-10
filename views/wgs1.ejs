@@ -191,7 +191,7 @@ jQuery(function() {
 <div id='layout'><!--좌우 기본공간 띄우기 전체 레이아웃-->
 <div class="ui grid">
 <div class="six wide column">
-  <h3 class="animated  bounce slower"><a href='/test'>kt VoLTE One-View - <%=title%></a></h3>
+  <h3 class="animated  bounce slower">kt VoLTE One-View - <%=title%></h3>
 </div>
 <div class="ten wide column">
   <div class="ui four item menu">
@@ -302,8 +302,6 @@ function displayEvent(result,cscf){
 
   beforeAnimationCnt=animationCnt;
 }
-
-
 //-------------CSCF#1---------------------
 // CSCF#1 시도호 차트생성
 var callChart1=c3.generate({
@@ -416,26 +414,21 @@ var completeChart1=c3.generate({
           <%=result1[i].TIME%>,
         <%}%>
       ],
-      ['YIWGS1',
+      ['YIWGS1_C',
         <%for(i in result1){%>
           <%=result1[i].YIWGS1_C%>,
         <%}%>
       ],
-      ['GRWGS1',
+      ['GRWGS1_C',
         <%for(i in result1){%>
           <%=result1[i].GRWGS1_C%>,
         <%}%>
       ],
-      ['GRWGS2',
+      ['GRWGS2_C',
         <%for(i in result1){%>
           <%=result1[i].GRWGS2_C%>,
         <%}%>
       ],
-      ['DAJUN1',
-        <%for(i in result1){%>
-          <%=result1[i].DAJUN1_C%>,
-        <%}%>
-      ]
     ],
    },
   grid:{
@@ -499,6 +492,85 @@ var completeChart1=c3.generate({
   },
 });  //end chart 완요율
 
+
+
+
+//CSCF1 시도호 ajax
+setInterval(function(){
+  jQuery.ajax({
+    url:'/ajax1',
+    method:'GET',
+    async:false,
+    dataType:'json',
+  }).done(function(ajresult1){
+
+
+    var TIME=new Array('TIME');
+    var YIWGS1_A=new Array('YIWGS1');
+    var GRWGS1_A=new Array('GRWGS1');
+    var GRWGS2_A=new Array('GRWGS2');
+    var DAJUN1_A=new Array('DAJUN1')
+
+    for(var i=0;i<ajresult1.length;i++){
+      TIME.push(ajresult1[i].TIME);
+      YIWGS1_A.push(ajresult1[i].YIWGS1_A);
+      GRWGS1_A.push(ajresult1[i].GRWGS1_A);
+      GRWGS2_A.push(ajresult1[i].GRWGS2_A);
+      DAJUN1_A.push(ajresult1[i].DAJUN1_A);
+    }
+
+
+    //displayCall(result);
+    callChart1.load({
+        columns:[
+          TIME,
+          YIWGS1_A,
+          GRWGS1_A,
+          GRWGS2_A,
+          DAJUN1_A,
+        ],
+    });
+  }).fail(function(a,b,c){
+    console.log('ajax1 fail');
+  });
+},6000);
+//CSCF1 완료율 ajax
+setInterval(function(){
+
+  jQuery.ajax({
+    url:'/ajax1',
+    method:'GET',
+    dataType:'json',
+    async:false,
+  }).done(function(ajresult1){
+    //console.log(result.TIME);
+    //displayEvent(result,cscf='CSCF#1');
+
+    var TIME=new Array('TIME');
+    var YIWGS1_C=new Array('YIWGS1_C');
+    var GRWGS1_C=new Array('GRWGS1_C');
+    var GRWGS2_C=new Array('GRWGS2_C');
+
+    for(var i=0;i<ajresult1.length;i++){
+      TIME.push(ajresult1[i].TIME);
+      YIWGS1_C.push(ajresult1[i].YIWGS1_C);
+      GRWGS1_C.push(ajresult1[i].GRWGS1_C);
+      GRWGS2_C.push(ajresult1[i].GRWGS2_C);
+    }
+    //displayCall(result);
+
+    completeChart1.load({
+        columns:[
+          TIME,
+          YIWGS1_C,
+          GRWGS1_C,
+          GRWGS2_C,
+        ],
+    });
+  }).fail(function(a,b,c){
+    console.log('a');
+  });
+},6000);
 //---------------CSCF#2---------------
 //CSCF#2 시도호 차트
 var callChart2=c3.generate({
@@ -611,24 +683,19 @@ var completeChart2=c3.generate({
           <%=result2[i].TIME%>,
         <%}%>
       ],
-      ['YIWGS1',
+      ['YIWGS1_C',
         <%for(i in result2){%>
           <%=result2[i].YIWGS1_C%>,
         <%}%>
       ],
-      ['GRWGS1',
+      ['GRWGS1_C',
         <%for(i in result2){%>
           <%=result2[i].GRWGS1_C%>,
         <%}%>
       ],
-      ['GRWGS2',
+      ['GRWGS2_C',
         <%for(i in result2){%>
           <%=result2[i].GRWGS2_C%>,
-        <%}%>
-      ],
-      ['DAJUN1',
-        <%for(i in result2){%>
-          <%=result2[i].DAJUN1_C%>,
         <%}%>
       ],
     ],
@@ -693,116 +760,80 @@ var completeChart2=c3.generate({
     duration:1000
   },
 }); //end chart
-
-
-//-----------Ajax Group------------
+//CSCF2 시도호 ajax
 setInterval(function(){
-  jQuery.when(jQuery.ajax('/ajax1'),jQuery.ajax('/ajax2')).done(function(res1,res2){
+  jQuery.ajax({
+    url:'/ajax2',
+    method:'GET',
+    async:false,
+    dataType:'json',
+  }).done(function(ajresult2){
+    console.log('cscf2 : ')
+    var TIME=new Array('TIME');
+    var YIWGS1_A=new Array('YIWGS1');
+    var GRWGS1_A=new Array('GRWGS1');
+    var GRWGS2_A=new Array('GRWGS2');
+    var DAJUN1_A=new Array('DAJUN1')
 
-//CSCF#1 시도호 차트
-  var TIME=new Array('TIME');
-  var YIWGS1=new Array('YIWGS1');
-  var GRWGS1=new Array('GRWGS1');
-  var GRWGS2=new Array('GRWGS2');
-  var DAJUN1=new Array('DAJUN1');
+    for(var i=0;i<ajresult2.length;i++){
+      TIME.push(ajresult2[i].TIME);
+      YIWGS1_A.push(ajresult2[i].YIWGS1_A);
+      GRWGS1_A.push(ajresult2[i].GRWGS1_A);
+      GRWGS2_A.push(ajresult2[i].GRWGS2_A);
+      DAJUN1_A.push(ajresult2[i].DAJUN1_A);
+    }
+    //displayCall(result);
+    callChart1.load({
+        columns:[
+          TIME,
+          YIWGS1_A,
+          GRWGS1_A,
+          GRWGS2_A,
+          DAJUN1_A,
+        ],
+    });
 
-  //console.log(res1[0]);
-
-  for(var i=0;i<res1[0].length;i++){
-    TIME.push(res1[0][i].TIME);
-    YIWGS1.push(res1[0][i].GRWGS1_A);
-    GRWGS1.push(res1[0][i].GRWGS1_A);
-    GRWGS2.push(res1[0][i].GRWGS2_A);
-    DAJUN1.push(res1[0][i].DAJUN1_A);
-  }
-
-  callChart1.load({
-    column:[
-      TIME,
-      YIWGS1,
-      GRWGS1,
-      GRWGS2,
-      DAJUN1,
-    ]
+  }).fail(function(a,b,c){
+    console.log('ajax fail');
   });
-
-  //CSCF#1 완료율 차트
-  var TIME=new Array('TIME');
-  var YIWGS1=new Array('YIWGS1');
-  var GRWGS1=new Array('GRWGS1');
-  var GRWGS2=new Array('GRWGS2');
-  var DAJUN1=new Array('DAJUN1');
-
-
-  for(var i=0;i<res1[0].length;i++){
-    YIWGS1.push(res1[0][i].YIWGS1_C);
-    GRWGS1.push(res1[0][i].GRWGS1_C);
-    GRWGS2.push(res1[0][i].GRWGS2_C);
-    DAJUN1.push(res1[0][i].DAJUN1_C);
-  }
-
-  completeChart1.load({
-    column:[
-      TIME,
-      YIWGS1,
-      GRWGS1,
-      GRWGS2,
-      DAJUN1,
-    ]
-  });
-
-  //CSCF#2 시도호 차트
-  var TIME=new Array('TIME');
-  var YIWGS1=new Array('YIWGS1');
-  var GRWGS1=new Array('GRWGS1');
-  var GRWGS2=new Array('GRWGS2');
-  var DAJUN1=new Array('DAJUN1');
-
-  for(var i=0;i<res2[0].length;i++){
-    TIME.push(res2[0][i].TIME);
-    YIWGS1.push(res2[0][i].GRWGS1_A);
-    GRWGS1.push(res2[0][i].GRWGS1_A);
-    GRWGS2.push(res2[0][i].GRWGS2_A);
-    DAJUN1.push(res2[0][i].DAJUN1_A);
-  }
-
-  callChart2.load({
-    column:[
-      TIME,
-      YIWGS1,
-      GRWGS1,
-      GRWGS2,
-      DAJUN1,
-    ]
-  });
-
-  //CSCF#2 완료율 차트
-  var TIME=new Array('TIME');
-  var YIWGS1=new Array('YIWGS1');
-  var GRWGS1=new Array('GRWGS1');
-  var GRWGS2=new Array('GRWGS2');
-  var DAJUN1=new Array('DAJUN1');
-
-
-  for(var i=0;i<res2[0].length;i++){
-    YIWGS1.push(res2[0][i].YIWGS1_C);
-    GRWGS1.push(res2[0][i].GRWGS1_C);
-    GRWGS2.push(res2[0][i].GRWGS2_C);
-    DAJUN1.push(res2[0][i].DAJUN1_C);
-  }
-
-  completeChart2.load({
-    column:[
-      TIME,
-      YIWGS1,
-      GRWGS1,
-      GRWGS2,
-      DAJUN1,
-    ]
-  });
-
-}); //done
 },6000);
+//CSCF2 완료율 ajax
+setInterval(function(){
+  jQuery.ajax({
+    url:'/ajax2',
+    method:'GET',
+    dataType:'json',
+    async:false,
+  }).done(function(result){
+    var TIME=new Array('TIME');
+    var YIWGS1_C=new Array('YIWGS1_C');
+    var GRWGS1_C=new Array('GRWGS1_C');
+    var GRWGS2_C=new Array('GRWGS2_C');
+
+    for(var i=0;i<result.length;i++){
+      TIME.push(result[i].TIME);
+      YIWGS1_C.push(result[i].YIWGS1_C);
+      GRWGS1_C.push(result[i].GRWGS1_C);
+      GRWGS2_C.push(result[i].GRWGS2_C);
+    }
+    //displayCall(result);
+
+    completeChart1.load({
+        columns:[
+          TIME,
+          YIWGS1_C,
+          GRWGS1_C,
+          GRWGS2_C,
+        ],
+    });
+  }).fail(function(a,b,c){
+    console.log('a');
+  });
+},6000);
+
+
+
+
 
 </script>
 </body>

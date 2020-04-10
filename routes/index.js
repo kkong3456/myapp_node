@@ -16,8 +16,8 @@ router.get('/', function(req, res, next) {
 
 var connection=mysql.createConnection({
   host:'localhost',
-  user:'root',
-  password:'',
+  user:'nodejs',
+  password:'rmfltmeh',
   database:'oneview',
   multipleStatements:true,
 });
@@ -64,19 +64,19 @@ router.all('/test',function(req,res,next){
     });//connction.query end
 });
 
-router.all('/ajax',function(req,res,next){
-  //주기적으로 spine차트의 그림을 표시
-  var connection=mysql.createConnection({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'oneview',
-  });
+router.all('/ajax1',function(req,res,next){
+  var sql1_1='select * from cscf1;';
+  //connection.connect();
+  connection.query(sql1_1,function(err,result){
 
-  connection.connect();
-  connection.query('select * from cscf1',function(err,results){
-    console.log('ajax');
-    res.send(results);  //send로 배열을 전달
+    res.send(result);  //send로 배열을 전달
+  });
+});
+
+router.all('/ajax2',function(req,res,next){
+  var sql2_1='select * from cscf2;';
+  connection.query(sql2_1,function(err,result){
+    res.send(result);
   });
 });
 
@@ -90,14 +90,12 @@ router.all('/eventAjax',function(req,res,next){
     var routeName=['ETC','YIWGS1','GRWGS1','GRWGS2','DAJUN1']
     var cscfArray=['CSCF#1','CSCF#2'];
 
-
     connection.query(sql1_1 + sql2_1 ,function(err,result,fields){
-
       if(err) throw err;
       var result1=result[0];  //sql1_1의 결과값
       var result2=result[1];
 
-      console.log(result1[0]);
+      //console.log(result1[0]);
 
       //for(var i=0;i<result1.length;i++){
       for (var i=0;i<2;i++){  //j는 CSCF, i는 내림차순 시간 순서
@@ -120,11 +118,17 @@ router.all('/eventAjax',function(req,res,next){
     });//connction.query end
 });
 
-
-
 router.get('/wgs',function(req,res,next){
-  res.render('wgs',{title:'wgs'});
-  next();
+  var sql1_1='select * from cscf1 order by TIME desc;';
+  var sql2_1='select * from cscf2 order by TIME desc;';
+
+  connection.query(sql1_1 + sql2_1 ,function(err,result,fields){
+    if(err) throw err;
+    var result1=result[0];  //sql1_1의 결과값
+    var result2=result[1];
+
+    res.render('wgs',{title:'wgs',result1:result1,result2:result2});
+  });
 });
 
 router.get('/cscf2',function(req,res,next){

@@ -3,8 +3,6 @@ var router = express.Router();
 var fs=require('fs');
 var app=express();
 var mysql=require('mysql');
-var SSH=require('simple-ssh');
-
 
 
 
@@ -12,13 +10,6 @@ var SSH=require('simple-ssh');
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'CSCF#1' });
   next();
-});
-
-//폭주호 정보 가져오기
-var ssh=new SSH({
-  host:'172.21.223.117',
-  user:'root',
-  pass:'cheerup1LTAS!'  
 });
 
 
@@ -31,14 +22,10 @@ var connection=mysql.createConnection({
   multipleStatements:true,
 });
 
-var stdout='xxx';
-function runAway(){
-  
-  return stdout;
-}
+
+
 router.all('/test',function(req,res,next){
-    
-  
+
     var sql1_1='select * from cscf1 order by TIME desc;';
     var sql2_1='select * from cscf2 order by TIME desc;';
 
@@ -54,7 +41,9 @@ router.all('/test',function(req,res,next){
       var result1=result[0];  //sql1_1의 결과값
       var result2=result[1];
 
-  
+      //console.log(result1);
+
+      //for(var i=0;i<result1.length;i++){
       for (var i=0;i<2;i++){  //j는 CSCF, i는 내림차순 시간 순서
         for(var j=0;j<2;j++){
           if(result[j][i].YIWGS1_C<70){
@@ -71,18 +60,8 @@ router.all('/test',function(req,res,next){
           }
         } //for end
       } // for end
-     
       res.render('test',{title:'cscf1',result1:result1,eventValueArray:eventValueArray});
     });//connction.query end
-});
-
-router.all('/runAwayAjax',function(req,res,next){
-  stdout=ssh.exec('tail -n3 /home/VoLTE/20200411_msg.txt',{
-    out:function(stdout){
-      //console.log(stdout); 
-      res.send(stdout);
-    }  
-  }).start();
 });
 
 router.all('/ajax1',function(req,res,next){

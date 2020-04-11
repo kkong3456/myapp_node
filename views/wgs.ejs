@@ -1,210 +1,4 @@
-<!doctype html>
-<html>
-<head><title><%=title%></title>
-  <link rel='stylesheet' href='/stylesheets/semantic.css' type='text/css' media='all'>
-  <link rel='stylesheet' href='/UI-Icon-master/icon.min.css' type='text/css' media='all'>
-  <like rel='stylesheet' href='/UI-Dropdown-master/dropdown.min.css' type='text/css' media='all'>
-  <link rel='stylesheet' href='/stylesheets/animate.css' type='text/css' media='all'>
-  <script type='text/javascript' src='/jquery/jquery.js'></script>
-  <script type='text/javascript' src='/stylesheets/semantic.js'></script>
-  <script type='text/javascript' src='/UI-Dropdown-master/dropdown.min.js'></script>
-  <link rel='stylesheet' href='/c3js/c3.css' type='text/css' media='all'>
-  <script type='text/javascript' src='/d3/d3.min.js' charset='utf-8'></script>
-  <script type='text/javascript' src='/c3js/c3.min.js'></script>
-  <meta name="viewport" content="width=device-width,inital-scale=1.0">
-<style>
-
-  #layout{
-    padding:10px;
-    margin:10px;
-
-  }
-  .eight{
-    /* background-color:#eeeeee; */
-  }
-
-  #callChart1 svg,#completeChart1 svg,#callChart2 svg,#completeChart2 svg,
-  #callChart3 svg,#completeChart3 svg
-  {
-    background-color:#454545;
-  }
-  /* x축 선색 */
-  .c3 .c3-axis-x path,
-  .c3 .c3-axis-x line{
-    stroke:#ddd;
-  }
-
-  .c3 .c3-axis-y path,
-  .c3 .c3-axis-y lines{
-    stroke:#ddd;
-  }
-  /* x 축 글자 색*/
-  .c3 .c3-axis-x{
-    stroke:white;
-    font-weight:100;
-  }
-
-  .c3 .c3-axis-y{
-    stroke:white;
-    font-weight:100;
-  }
-  /*아래 범레의 글자색 변경*/
-  .c3 .c3-legend-item{
-     fill:white;
-  }
-
-  .ui.four.item.menu .item{
-    font-size:2.0em;
-    font-weight:bold;
-    padding:15px;
-    text-shadow:1px 1px 1px #cccccc;
-    background-color:#eeeeee;
-  }
-  .neStatus {
-    border:10px solid #cccccc;
-    height:150px;
-    vertical-align:middle;
-    box-shadow:0px 0px 15px #cccccc;
-  }
-
-  /* WGS/IBCF/TAS */
-  .neStatus p{
-    line-height:150px;
-    /*display:block;*/
-    font-size:3.5em;
-    font-weight:bold;
-    float:left;
-    margin-left:25%;
-    margin-bottom:0;
-    text-shadow:1px 1px 2px #cccccc;
-  }
-
-
-  /* 동그라미 */
-  .neStatus #cscfCircle,#ibcfCircle,#tasCircle{
-    width:100px;
-    height:100px;
-    border-radius:100%;
-    background:#d2ff52;
-    background:-moz-radial-gradient(center,ellipse cover,#d2ff52 0%,#91e842 100%);
-    background:-webkit-radial-gradient(center,ellipse cover,#d2ff52 0%,#91e842 100%);
-    /*padding:50px 40px;*/
-    text-align:center;
-    line-height:10px;
-    position:relative;
-    top:15%;
-    left:5%;
-    box-shadow:0 0 22px red;
-
-    display:block;
-
-    float:left;
-  }
-  /* 동그라미 속 글자(정상/비정상) */
-  .neStatus #cscfCircle p,.neStatus #ibcfCircle p,.neStatus #tasCircle p{
-    font-size:2em;
-    position:relative;
-    top:-25%;
-    text-shadow:1px 1px 1px #cccccc;
-  }
-
-
-  .alarmContent{
-    clear:both;
-    border-left:10px solid #cccccc;
-    border-right:10px solid #cccccc;
-  }
-
-  .alarmContent p{
-    width:45%;
-    background-color:#cccccc;
-    border-radius: 0 0 20px 0;
-    font-weight:bold;
-    font-size:1em;
-    padding:2px;
-  }
-
-  #eventWindow{
-    border-left:10px solid #cccccc;
-    border-right:10px solid #cccccc;
-    border-bottom:10px solid #cccccc;
-    height:300px;
-    overflow:auto;
-    box-shadow:0 0 20px #cccccc;
-  }
-  div.three.column.row{
-    padding-top:0;
-    padding-bottom:2px;
-  }
-  .runAway{
-    border:10px solid #cccccc;
-    height:200px;
-
-    box-shadow:0 0 20px #cccccc;
-  }
-
-  .runAway p{
-    width:55%;
-    background-color:#cccccc;
-    border-radius:0 0 20px 0;
-    font-weight:bold;
-    font-size:1em;
-    padding:2px;
-  }
-
-  .runAway1 p{
-    width:44%;
-    background-color:#cccccc;
-    border-radius:0 0 20px 0;
-    font-weight:bold;
-    font-size:1em;
-    padding:2px;
-  }
-
-
-  .animated.bounce{
-    /* animation-duration:5s;
-    animation-delay:10s; */
-
-    /*height:80px;*/
-    margin-bottom:20px;
-    font-size:3.0em;
-    text-shadow:0px 0px 5px #33ff33;
-  }
-  #block{
-    height:10px;
-    background-color:red;
-  }
-
-</style>
-<script>
-jQuery(function() {
-  jQuery('.ui.dropdown').dropdown();
-  //jQuery('#eventWindow').load('/event.txt');
-
-});
-</script>
-
-</head>
-<body>
-
-<div id='layout'><!--좌우 기본공간 띄우기 전체 레이아웃-->
-<div class="ui grid">
-<div class="six wide column">
-  <h3 class="animated  bounce slower"><a href='/test'>kt VoLTE One-View - <%=title%></a></h3>
-</div>
-<div class="ten wide column">
-  <div class="ui four item menu">
-    <a href="/wgs" class="item">WGS</a>
-    <a href="/ibcf" class="item">IBCF</a>
-    <a href="/tas" class="item">TAS</a>
-    <a class="item">Console</a>
-  </div>
-</div>
-</div><!--ui grid -->
-
-
-
+<%-include('header')%>
 
 <div class="ui grid">
   <div class="eight wide column">
@@ -402,6 +196,7 @@ var callChart1=c3.generate({
     duration:1000
   },
 });  //end chart 시도호
+
 //CSCF#1완료율 차트
 var completeChart1=c3.generate({
   bindto:'#completeChart1',
@@ -710,14 +505,15 @@ setInterval(function(){
 
   for(var i=0;i<res1[0].length;i++){
     TIME.push(res1[0][i].TIME);
-    YIWGS1.push(res1[0][i].GRWGS1_A);
+    YIWGS1.push(res1[0][i].YIWGS1_A);
     GRWGS1.push(res1[0][i].GRWGS1_A);
     GRWGS2.push(res1[0][i].GRWGS2_A);
     DAJUN1.push(res1[0][i].DAJUN1_A);
   }
 
+  //console.dir(YIWGS1);
   callChart1.load({
-    column:[
+    columns:[
       TIME,
       YIWGS1,
       GRWGS1,
@@ -735,6 +531,7 @@ setInterval(function(){
 
 
   for(var i=0;i<res1[0].length;i++){
+    TIME.push(res1[0][i].TIME);
     YIWGS1.push(res1[0][i].YIWGS1_C);
     GRWGS1.push(res1[0][i].GRWGS1_C);
     GRWGS2.push(res1[0][i].GRWGS2_C);
@@ -742,7 +539,7 @@ setInterval(function(){
   }
 
   completeChart1.load({
-    column:[
+    columns:[
       TIME,
       YIWGS1,
       GRWGS1,
@@ -760,14 +557,14 @@ setInterval(function(){
 
   for(var i=0;i<res2[0].length;i++){
     TIME.push(res2[0][i].TIME);
-    YIWGS1.push(res2[0][i].GRWGS1_A);
+    YIWGS1.push(res2[0][i].YIWGS1_A);
     GRWGS1.push(res2[0][i].GRWGS1_A);
     GRWGS2.push(res2[0][i].GRWGS2_A);
     DAJUN1.push(res2[0][i].DAJUN1_A);
   }
 
   callChart2.load({
-    column:[
+    columns:[
       TIME,
       YIWGS1,
       GRWGS1,
@@ -785,6 +582,7 @@ setInterval(function(){
 
 
   for(var i=0;i<res2[0].length;i++){
+    TIME.push(res2[0][i].TIME);
     YIWGS1.push(res2[0][i].YIWGS1_C);
     GRWGS1.push(res2[0][i].GRWGS1_C);
     GRWGS2.push(res2[0][i].GRWGS2_C);
@@ -792,7 +590,7 @@ setInterval(function(){
   }
 
   completeChart2.load({
-    column:[
+    columns:[
       TIME,
       YIWGS1,
       GRWGS1,
